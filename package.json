@@ -1,8 +1,11 @@
 {
-  "name": "git-emoji",
+  "name": "simple-git-emoji",
   "version": "1.0.0",
   "description": "CLI to encourage more concise commits.",
   "main": "cli.js",
+  "bin": {
+    "gc": "cli.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,10 +14,12 @@
     "url": "git+https://github.com/sodiumhalogenteam/git-emoji.git"
   },
   "author": "Sodium Halogen",
-  "contributors": [{
-    "name": "Chance Smith",
-    "url": "https://github.com/chancesmith"
-  }],
+  "contributors": [
+    {
+      "name": "Chance Smith",
+      "url": "https://github.com/chancesmith"
+    }
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/sodiumhalogenteam/git-emoji/issues"

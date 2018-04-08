@@ -10,7 +10,7 @@ Simple CLI to encourage more concise commits.
 ## usage
 
 * $`git add .` or create alias $`ga`
-* $`git-emoji-commit` or $`gec` or $`gec --[option] "YOUR COMMIT MESSAGE"`
+* $`git-emoji-commit` or $`gec`
 * $`git pull` or create alias $`gl`
 * $`git push` or create alias $`gp`
 

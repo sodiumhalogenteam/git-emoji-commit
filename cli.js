@@ -34,6 +34,9 @@ var questions = [
   }
 ];
 
+// TODO:
+// need to check for commitType without a program.args - Chance
+
 if (program.style) {
   let command = 'git commit -m "💅 STYLE: ' + program.args + '"';
   exec(command, function(err, stdout, stderr) {

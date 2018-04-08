@@ -18,8 +18,8 @@ console.log("you created a commit:");
 
 if (program.style) {
   // let command = 'ls'
-  // let command = 'gc "💅 STYLE: ' + program.args + '"'
-  let command = 'git commit -m "confirms test command"';
+  let command = 'git commit "💅 STYLE: ' + program.args + '"';
+  // let command = 'git commit -m "confirms test command"';
 
   exec(command, function(err, stdout, stderr) {
     console.log(stdout.toString("utf8"));

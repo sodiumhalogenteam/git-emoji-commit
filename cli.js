@@ -1,7 +1,9 @@
 #!/usr/bin / env node
 
-var program = require('commander');
-var exec = require('child_process')
+const program = require('commander');
+const {
+  exec
+} = require('child_process');
 
 program
   .version('0.1.0')
@@ -15,7 +17,16 @@ program
 
 console.log('you created a commit:');
 // WIP - need to turn these into terminal commands - Chance
-if (program.style) console.log('gc "💅 STYLE: %j"', program.args);
+
+if (program.style) {
+  // let command = 'ls'
+  // let command = 'gc "💅 STYLE: ' + program.args + '"'
+  let command = 'gc "STYLE: "'
+
+  exec(command, function (err, stdout, stderr) {
+    console.log(stdout.toString('utf8'))
+  })
+}
 if (program.bug) console.log('gc "🐛 BUG: %j"', program.args);
 if (program.improve) console.log('gc "👌 DOC: %j"', program.args);
 if (program.release) console.log('gc "🚀 RELSEASE: %j"', program.args);

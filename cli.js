@@ -92,13 +92,17 @@ if (program.style) {
           let command = `git commit -m "${commitTypeCleaned}: ${
             answers.commitMessage
           }"`;
-          console.log(command);
+          exec(command, function(err, stdout, stderr) {
+            console.log(stdout.toString("utf8"));
+          });
         });
     }
 
     if (program.args[0]) {
       let command = `git commit -m "${commitTypeCleaned}: ${program.args}"`;
-      console.log(command);
+      exec(command, function(err, stdout, stderr) {
+        console.log(stdout.toString("utf8"));
+      });
     }
   });
 }

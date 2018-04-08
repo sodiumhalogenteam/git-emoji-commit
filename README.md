@@ -1,4 +1,4 @@
-# git-emoji
+# simple-git-emoji
 
 Simple CLI to encourage more concise commits.
 

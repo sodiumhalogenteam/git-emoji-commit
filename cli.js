@@ -18,7 +18,9 @@ console.log("you created a commit:");
 
 if (program.style) {
   // let command = 'ls'
-  let command = 'git commit "💅 STYLE: ' + program.args + '"';
+  console.log(program.args);
+  let command = 'git commit -m "💅 STYLE: ' + program.args + '"';
+  console.log(command);
   // let command = 'git commit -m "confirms test command"';
 
   exec(command, function(err, stdout, stderr) {

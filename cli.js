@@ -26,7 +26,7 @@ var questions = [
       "📦  NEW: addition",
       "🚀  RELSEASE: release feature",
       "💅  STYLE: layout or style change",
-      "✅ TEST: add/edit tests"
+      "✅  TEST: add/edit tests"
     ],
     when: function(answers) {
       return answers.comments !== "Nope, all good!";
@@ -38,33 +38,33 @@ var questions = [
 // need to check for commitType without a program.args - Chance
 
 if (program.style) {
-  let command = 'git commit -m "💅 STYLE: ' + program.args + '"';
+  let command = 'git commit -m "💅  STYLE: ' + program.args + '"';
   exec(command, function(err, stdout, stderr) {
     console.log(stdout.toString("utf8"));
   });
 } else if (program.bug) {
-  let command = 'git commit -m "🐛 BUG: ' + program.args + '"';
+  let command = 'git commit -m "🐛  BUG: ' + program.args + '"';
   exec(command, function(err, stdout, stderr) {
     console.log(stdout.toString("utf8"));
   });
 } else if (program.improve) {
-  let command = 'git commit -m "⚡ IMPROVE: ' + program.args + '"';
+  let command = 'git commit -m "⚡  IMPROVE: ' + program.args + '"';
   console.log(command);
   exec(command, function(err, stdout, stderr) {
     console.log(stdout.toString("utf8"));
   });
 } else if (program.release) {
-  let command = 'git commit -m "🚀 RELSEASE: ' + program.args + '"';
+  let command = 'git commit -m "🚀  RELSEASE: ' + program.args + '"';
   exec(command, function(err, stdout, stderr) {
     console.log(stdout.toString("utf8"));
   });
 } else if (program.new) {
-  let command = 'git commit -m "📦 NEW: ' + program.args + '"';
+  let command = 'git commit -m "📦  NEW: ' + program.args + '"';
   exec(command, function(err, stdout, stderr) {
     console.log(stdout.toString("utf8"));
   });
 } else if (program.doc) {
-  let command = 'git commit -m "📖 DOC: ' + program.args + '"';
+  let command = 'git commit -m "📖  DOC: ' + program.args + '"';
   exec(command, function(err, stdout, stderr) {
     console.log(stdout.toString("utf8"));
   });

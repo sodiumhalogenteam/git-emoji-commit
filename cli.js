@@ -61,3 +61,8 @@ if (program.doc) {
     if (!err) console.log("You're ready to push.");
   });
 }
+
+// if nothing
+if (!program.style) {
+  console.log("You must pick a commit emoji option. See options: gc --help");
+}

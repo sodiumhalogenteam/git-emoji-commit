@@ -20,12 +20,13 @@ var questions = [
     name: "commitType",
     message: "Select a commit message type:",
     choices: [
-      "💅  STYLE: layout or style change",
       "🐛  BUG: fix/squash bug",
+      "📖  DOC: documentation",
       "⚡  IMPROVE: refactoring",
-      "🚀  RELSEASE: release feature",
       "📦  NEW: addition",
-      "📖  DOC: documentation"
+      "🚀  RELSEASE: release feature",
+      "💅  STYLE: layout or style change",
+      "✅ TEST: add/edit tests"
     ],
     when: function(answers) {
       return answers.comments !== "Nope, all good!";

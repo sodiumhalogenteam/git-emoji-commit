@@ -11,12 +11,10 @@
     "url": "git+https://github.com/sodiumhalogenteam/git-emoji.git"
   },
   "author": "Sodium Halogen",
-  "contributors": [
-    {
-      "name": "Chance Smith",
-      "url": "https://github.com/chancesmith"
-    },
-  ]
+  "contributors": [{
+    "name": "Chance Smith",
+    "url": "https://github.com/chancesmith"
+  }],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/sodiumhalogenteam/git-emoji/issues"

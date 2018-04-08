@@ -1,7 +1,7 @@
 {
-  "name": "simple-git-emoji",
+  "name": "git-emoji-commit",
   "version": "1.1.6",
-  "description": "CLI to encourage more concise commits.",
+  "description": "Simple CLI to encourage more concise commits.",
   "main": "cli.js",
   "bin": {
     "git-emoji-commit": "cli.js",

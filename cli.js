@@ -13,22 +13,51 @@ program
   .option("-d, --doc", "add/edit documentation")
   .parse(process.argv);
 
-console.log("you created a commit:");
-// WIP - need to turn these into terminal commands - Chance
-
 if (program.style) {
-  // let command = 'ls'
-  console.log(program.args);
   let command = 'git commit -m "💅 STYLE: ' + program.args + '"';
-  console.log(command);
-  // let command = 'git commit -m "confirms test command"';
-
   exec(command, function(err, stdout, stderr) {
     console.log(stdout.toString("utf8"));
+    if (!err) console.log("You're ready to push.");
   });
 }
-if (program.bug) console.log('gc "🐛 BUG: %j"', program.args);
-if (program.improve) console.log('gc "👌 DOC: %j"', program.args);
-if (program.release) console.log('gc "🚀 RELSEASE: %j"', program.args);
-if (program.new) console.log('gc "📦 NEW: %j"', program.args);
-if (program.doc) console.log('gc "📖 DOC: %j"', program.args[0]);
+
+if (program.bug) {
+  let command = 'git commit -m "🐛 BUG: ' + program.args + '"';
+  exec(command, function(err, stdout, stderr) {
+    console.log(stdout.toString("utf8"));
+    if (!err) console.log("You're ready to push.");
+  });
+}
+
+if (program.improve) {
+  let command = 'git commit -m "⚡ IMPROVE: ' + program.args + '"';
+  console.log(command);
+  exec(command, function(err, stdout, stderr) {
+    console.log(stdout.toString("utf8"));
+    if (!err) console.log("You're ready to push.");
+  });
+}
+
+if (program.release) {
+  let command = 'git commit -m "🚀 RELSEASE: ' + program.args + '"';
+  exec(command, function(err, stdout, stderr) {
+    console.log(stdout.toString("utf8"));
+    if (!err) console.log("You're ready to push.");
+  });
+}
+
+if (program.new) {
+  let command = 'git commit -m "📦 NEW: ' + program.args + '"';
+  exec(command, function(err, stdout, stderr) {
+    console.log(stdout.toString("utf8"));
+    if (!err) console.log("You're ready to push.");
+  });
+}
+
+if (program.doc) {
+  let command = 'git commit -m "📖 DOC: ' + program.args + '"';
+  exec(command, function(err, stdout, stderr) {
+    console.log(stdout.toString("utf8"));
+    if (!err) console.log("You're ready to push.");
+  });
+}

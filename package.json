@@ -4,7 +4,7 @@
   "description": "CLI to encourage more concise commits.",
   "main": "cli.js",
   "bin": {
-    "gc": "cli.js"
+    "git-emoji": "cli.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

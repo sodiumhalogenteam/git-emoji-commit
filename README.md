@@ -1,10 +1,10 @@
-# simple-git-emoji
+# git-emoji-commit
 
 Simple CLI to encourage more concise commits.
 
 ## setup
 
-* $ `npm i -g simple-git-emoji`
+* $ `npm i -g git-emoji-commit`
 * $ `git-emoji-commit --help` to see options
 
 ## usage

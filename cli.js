@@ -12,6 +12,7 @@ program
   .option("-r, --release", "release feature")
   .option("-n, --new", "add new feature")
   .option("-d, --doc", "add/edit documentation")
+  .option("-t, --test", "add/edit test")
   .parse(process.argv);
 
 var questions = [
@@ -24,7 +25,7 @@ var questions = [
       "📖  DOC: documentation",
       "⚡  IMPROVE: refactoring",
       "📦  NEW: addition",
-      "🚀  RELSEASE: release feature",
+      "🚀  RELEASE: release feature",
       "💅  STYLE: layout or style change",
       "✅  TEST: add/edit tests"
     ],
@@ -48,23 +49,28 @@ if (program.style) {
     console.log(stdout.toString("utf8"));
   });
 } else if (program.improve) {
-  let command = 'git commit -m "⚡  IMPROVE: ' + program.args + '"';
+  let command = `git commit -m "⚡  IMPROVE: ${program.args}"`;
   console.log(command);
   exec(command, function(err, stdout, stderr) {
     console.log(stdout.toString("utf8"));
   });
 } else if (program.release) {
-  let command = 'git commit -m "🚀  RELSEASE: ' + program.args + '"';
+  let command = `git commit -m "🚀  RELEASE: ${program.args}"`;
   exec(command, function(err, stdout, stderr) {
     console.log(stdout.toString("utf8"));
   });
 } else if (program.new) {
-  let command = 'git commit -m "📦  NEW: ' + program.args + '"';
+  let command = `git commit -m "📦  NEW: ${program.args}"`;
   exec(command, function(err, stdout, stderr) {
     console.log(stdout.toString("utf8"));
   });
 } else if (program.doc) {
-  let command = 'git commit -m "📖  DOC: ' + program.args + '"';
+  let command = `git commit -m "📖  DOC: ${program.args}"`;
+  exec(command, function(err, stdout, stderr) {
+    console.log(stdout.toString("utf8"));
+  });
+} else if (program.test) {
+  let command = `git commit -m "✅  TEST: ${program.args}"`;
   exec(command, function(err, stdout, stderr) {
     console.log(stdout.toString("utf8"));
   });

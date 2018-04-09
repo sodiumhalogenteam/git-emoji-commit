@@ -16,10 +16,7 @@
   },
   "author": "Sodium Halogen",
   "contributors": [
-    {
-      "name": "Chance Smith",
-      "url": "https://github.com/chancesmith"
-    }
+    "Chance Smith (https://github.com/chancesmith)"
   ],
   "license": "ISC",
   "bugs": {
@@ -29,5 +26,8 @@
   "dependencies": {
     "commander": "^2.15.1",
     "inquirer": "^5.2.0"
-  }
+  },
+  "keywords": [
+    "git"
+  ]
 }

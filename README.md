@@ -2,6 +2,8 @@
 
 Simple CLI to encourage more concise commits.
 
+![git-emoji-commit](./assets/git-emoji-commit.gif)
+
 ## setup
 
 * $ `npm i -g git-emoji-commit`

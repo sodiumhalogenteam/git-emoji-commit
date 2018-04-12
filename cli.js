@@ -76,15 +76,14 @@ if (program.style) {
   });
 } else {
   // if nothing
-  console.log(
-    "You must pick (ONLY) one commit emoji option. See options: gc --help"
-  );
+  console.log("Pick a commit type. See more: gc --help");
   inquirer.prompt(questions).then(answers => {
     let commitType = JSON.stringify(answers.commitType, null, "  ");
     let commitTypeCleaned = commitType.replace(/\:(.*)/, "").replace(/"/, "");
 
     // check for commit message
     if (!program.args[0] || !program.args.length || !program.args) {
+      // TODO: refactor to prevent having more than one inquirer in another inquirer - Chance
       inquirer
         .prompt({
           type: "input",

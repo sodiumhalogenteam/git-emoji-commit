@@ -9,19 +9,21 @@ Simple CLI to encourage more concise commits.
 * $ `npm i -g git-emoji-commit`
 * $ `git-emoji-commit --help` to see options
 
-## usage
+## usages
+
+* $`git-emoji-commit` or
+* $`gec` or
+* $`gec "YOUR COMMIT MESSAGE"` or
+* $`gec --[option] "YOUR COMMIT MESSAGE"`
+
+## git-emoji-commit workflow
 
 * $`git add .` or create alias $`ga`
 * $`git-emoji-commit` or $`gec`
 * $`git pull` or create alias $`gl`
 * $`git push` or create alias $`gp`
 
-## usage alternatives
+## todos
 
-* $`gec --[option] "YOUR COMMIT MESSAGE"`
-* $`gec "YOUR COMMIT MESSAGE"`
-
-## dependencies used
-
-https://github.com/tj/commander.js
-https://github.com/SBoudrias/Inquirer.js
+* [ ] account for entry with an option but no message - $`gec --[option]`
+* [ ] refactor emoji option prompt

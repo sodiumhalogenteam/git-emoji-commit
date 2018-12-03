@@ -3,9 +3,10 @@
 const program = require("commander");
 const { exec } = require("child_process");
 const inquirer = require("inquirer");
+var pjson = require("./package.json");
 
 program
-  .version("1.1.1")
+  .version(pjson.version)
   .option("-s, --style", "edit/add styles")
   .option("-b, --bug", "squash bugs")
   .option("-i, --improve", "refactor or rework")

@@ -29,3 +29,4 @@ Simple CLI to encourage more concise commits.
 
 - [ ] account for entry with an option but no message - \$`gec --[option]`
 - [ ] refactor emoji option prompt
+- [ ] check what version user has, prompt for update if old

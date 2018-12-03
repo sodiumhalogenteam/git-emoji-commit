@@ -6,7 +6,7 @@ const inquirer = require("inquirer");
 var pjson = require("./package.json");
 
 program
-  .version(pjson.version)
+  .version("3.0.0")
   .option("-s, --style", "edit/add styles")
   .option("-b, --bug", "squash bugs")
   .option("-i, --improve", "refactor or rework")
@@ -38,48 +38,70 @@ var questions = [
   }
 ];
 
+// check users global version
+const checkVersion = () => {
+  exec("npm show git-emoji-commit version", function(err, stdout, stderr) {
+    if (pjson.version.trim() != stdout.trim().toString("utf8"))
+      console.log(
+        `\x1b[32m`, // green
+        `😎  Update available: ${stdout}`,
+        "\x1b[37m", // white
+        `run $ npm update i -g git-emoji-commit`
+      );
+  });
+};
+
 // TODO: need to check for commitType without a program.args - Chance
+// TODO: clean up the exec and versionChecks calls - Chance
 
 if (program.style) {
   let command = 'git commit -m "💅  STYLE: ' + program.args + '"';
   exec(command, function(err, stdout, stderr) {
     console.log(stdout.toString("utf8"));
+    checkVersion();
   });
 } else if (program.bug) {
   let command = 'git commit -m "🐛  BUG: ' + program.args + '"';
   exec(command, function(err, stdout, stderr) {
     console.log(stdout.toString("utf8"));
+    checkVersion();
   });
 } else if (program.improve) {
   let command = `git commit -m "⚡  IMPROVE: ${program.args}"`;
   console.log(command);
   exec(command, function(err, stdout, stderr) {
     console.log(stdout.toString("utf8"));
+    checkVersion();
   });
 } else if (program.release) {
   let command = `git commit -m "🚀  RELEASE: ${program.args}"`;
   exec(command, function(err, stdout, stderr) {
     console.log(stdout.toString("utf8"));
+    checkVersion();
   });
 } else if (program.new) {
   let command = `git commit -m "📦  NEW: ${program.args}"`;
   exec(command, function(err, stdout, stderr) {
     console.log(stdout.toString("utf8"));
+    checkVersion();
   });
 } else if (program.doc) {
   let command = `git commit -m "📖  DOC: ${program.args}"`;
   exec(command, function(err, stdout, stderr) {
     console.log(stdout.toString("utf8"));
+    checkVersion();
   });
 } else if (program.try) {
   let command = `git commit -m "🤞  TRY: ${program.args}"`;
   exec(command, function(err, stdout, stderr) {
     console.log(stdout.toString("utf8"));
+    checkVersion();
   });
 } else if (program.test) {
   let command = `git commit -m "✅  TEST: ${program.args}"`;
   exec(command, function(err, stdout, stderr) {
     console.log(stdout.toString("utf8"));
+    checkVersion();
   });
 } else {
   // if nothing
@@ -110,6 +132,7 @@ if (program.style) {
           }"`;
           exec(command, function(err, stdout, stderr) {
             console.log(stdout.toString("utf8"));
+            checkVersion();
           });
         });
     }
@@ -118,6 +141,7 @@ if (program.style) {
       let command = `git commit -m "${commitTypeCleaned}: ${program.args}"`;
       exec(command, function(err, stdout, stderr) {
         console.log(stdout.toString("utf8"));
+        checkVersion();
       });
     }
   });

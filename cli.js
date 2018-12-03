@@ -40,8 +40,15 @@ var questions = [
 
 // check users global version
 const checkVersion = () => {
+  // only check major and minor versioning
   exec("npm show git-emoji-commit version", function(err, stdout, stderr) {
-    if (pjson.version.trim() != stdout.trim().toString("utf8"))
+    if (
+      pjson.version.trim().slice(0, -1) !=
+      stdout
+        .trim()
+        .toString("utf8")
+        .slice(0, -1)
+    )
       console.log(
         `\x1b[32m`, // green
         `😎  Update available: ${stdout}`,
@@ -51,60 +58,33 @@ const checkVersion = () => {
   });
 };
 
+const makeCommit = command => {
+  exec(command, function(err, stdout, stderr) {
+    console.log(stdout.toString("utf8"));
+    checkVersion();
+  });
+};
+
 // TODO: need to check for commitType without a program.args - Chance
-// TODO: clean up the exec and versionChecks calls - Chance
 
 if (program.style) {
-  let command = 'git commit -m "💅  STYLE: ' + program.args + '"';
-  exec(command, function(err, stdout, stderr) {
-    console.log(stdout.toString("utf8"));
-    checkVersion();
-  });
+  makeCommit(`git commit -m "💅  STYLE: ${program.args}"`);
 } else if (program.bug) {
-  let command = 'git commit -m "🐛  BUG: ' + program.args + '"';
-  exec(command, function(err, stdout, stderr) {
-    console.log(stdout.toString("utf8"));
-    checkVersion();
-  });
+  makeCommit(`git commit -m "🐛  BUG: ${program.args}"`);
 } else if (program.improve) {
-  let command = `git commit -m "⚡  IMPROVE: ${program.args}"`;
-  console.log(command);
-  exec(command, function(err, stdout, stderr) {
-    console.log(stdout.toString("utf8"));
-    checkVersion();
-  });
+  makeCommit(`git commit -m "⚡  IMPROVE: ${program.args}"`);
 } else if (program.release) {
-  let command = `git commit -m "🚀  RELEASE: ${program.args}"`;
-  exec(command, function(err, stdout, stderr) {
-    console.log(stdout.toString("utf8"));
-    checkVersion();
-  });
+  makeCommit(`git commit -m "🚀  RELEASE: ${program.args}"`);
 } else if (program.new) {
-  let command = `git commit -m "📦  NEW: ${program.args}"`;
-  exec(command, function(err, stdout, stderr) {
-    console.log(stdout.toString("utf8"));
-    checkVersion();
-  });
+  makeCommit(`git commit -m "📦  NEW: ${program.args}"`);
 } else if (program.doc) {
-  let command = `git commit -m "📖  DOC: ${program.args}"`;
-  exec(command, function(err, stdout, stderr) {
-    console.log(stdout.toString("utf8"));
-    checkVersion();
-  });
+  makeCommit(`git commit -m "📖  DOC: ${program.args}"`);
 } else if (program.try) {
-  let command = `git commit -m "🤞  TRY: ${program.args}"`;
-  exec(command, function(err, stdout, stderr) {
-    console.log(stdout.toString("utf8"));
-    checkVersion();
-  });
+  makeCommit(`git commit -m "🤞  TRY: ${program.args}"`);
 } else if (program.test) {
-  let command = `git commit -m "✅  TEST: ${program.args}"`;
-  exec(command, function(err, stdout, stderr) {
-    console.log(stdout.toString("utf8"));
-    checkVersion();
-  });
+  makeCommit(`git commit -m "✅  TEST: ${program.args}"`);
 } else {
-  // if nothing
+  // if no cli args
   console.log("Pick a commit type. See more: gc --help");
   inquirer.prompt(questions).then(answers => {
     let commitType = JSON.stringify(answers.commitType, null, "  ");
@@ -127,22 +107,14 @@ if (program.style) {
           }
         })
         .then(answers => {
-          let command = `git commit -m "${commitTypeCleaned}: ${
-            answers.commitMessage
-          }"`;
-          exec(command, function(err, stdout, stderr) {
-            console.log(stdout.toString("utf8"));
-            checkVersion();
-          });
+          makeCommit(
+            `git commit -m "${commitTypeCleaned}: ${answers.commitMessage}"`
+          );
         });
     }
 
     if (program.args[0]) {
-      let command = `git commit -m "${commitTypeCleaned}: ${program.args}"`;
-      exec(command, function(err, stdout, stderr) {
-        console.log(stdout.toString("utf8"));
-        checkVersion();
-      });
+      makeCommit(`git commit -m "${commitTypeCleaned}: ${program.args}"`);
     }
   });
 }

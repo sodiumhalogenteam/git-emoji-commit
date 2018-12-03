@@ -12,6 +12,7 @@ program
   .option("-r, --release", "release feature")
   .option("-n, --new", "add new feature")
   .option("-d, --doc", "add/edit documentation")
+  .option("-r, --try", "add untested to production")
   .option("-t, --test", "add/edit test")
   .parse(process.argv);
 
@@ -25,9 +26,10 @@ var questions = [
       "📖  DOC: documentation",
       "⚡  IMPROVE: refactoring",
       "📦  NEW: addition",
-      "🚀  RELEASE: release feature",
       "💅  STYLE: layout or style change",
-      "✅  TEST: add/edit tests"
+      "✅  TEST: add/edit tests",
+      "🤞  TRY: add untested to production",
+      "🚀  RELEASE: release feature"
     ],
     when: function(answers) {
       return answers.comments !== "Nope, all good!";
@@ -35,8 +37,7 @@ var questions = [
   }
 ];
 
-// TODO:
-// need to check for commitType without a program.args - Chance
+// TODO: need to check for commitType without a program.args - Chance
 
 if (program.style) {
   let command = 'git commit -m "💅  STYLE: ' + program.args + '"';
@@ -69,6 +70,11 @@ if (program.style) {
   exec(command, function(err, stdout, stderr) {
     console.log(stdout.toString("utf8"));
   });
+} else if (program.try) {
+  let command = `git commit -m "🤞  TRY: ${program.args}"`;
+  exec(command, function(err, stdout, stderr) {
+    console.log(stdout.toString("utf8"));
+  });
 } else if (program.test) {
   let command = `git commit -m "✅  TEST: ${program.args}"`;
   exec(command, function(err, stdout, stderr) {
@@ -93,8 +99,8 @@ if (program.style) {
             if (value !== "") {
               return true;
             }
-
-            return "😕 Please enter a valid commit message.";
+            console.log("😕  Please enter a valid commit message.");
+            return 0;
           }
         })
         .then(answers => {

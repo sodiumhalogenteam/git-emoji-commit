@@ -10,9 +10,8 @@ program
   .option("-s, --style", "edit/add styles")
   .option("-b, --bug", "squash bugs")
   .option("-i, --improve", "refactor or rework")
-  .option("-r, --release", "release feature")
   .option("-n, --new", "add new feature")
-  .option("-d, --doc", "add/edit documentation")
+  .option("-d, --doc", "add/edit documentation & content")
   .option("-r, --try", "add untested to production")
   .option("-t, --test", "add/edit test")
   .parse(process.argv);
@@ -29,8 +28,7 @@ var questions = [
       "📦  NEW: addition",
       "💅  STYLE: layout or style change",
       "✅  TEST: add/edit tests",
-      "🤞  TRY: add untested to production",
-      "🚀  RELEASE: release feature"
+      "🤞  TRY: add untested to production"
     ],
     when: function(answers) {
       return answers.comments !== "Nope, all good!";
@@ -73,8 +71,6 @@ if (program.style) {
   makeCommit(`git commit -m "🐛  BUG: ${program.args}"`);
 } else if (program.improve) {
   makeCommit(`git commit -m "⚡  IMPROVE: ${program.args}"`);
-} else if (program.release) {
-  makeCommit(`git commit -m "🚀  RELEASE: ${program.args}"`);
 } else if (program.new) {
   makeCommit(`git commit -m "📦  NEW: ${program.args}"`);
 } else if (program.doc) {

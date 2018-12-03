@@ -27,6 +27,6 @@ Simple CLI to encourage more concise commits.
 
 ## todos
 
-- [ ] account for entry with an option but no message - \$`gec --[option]`
+- [x] check what version user has, prompt for update if old
 - [ ] refactor emoji option prompt
-- [ ] check what version user has, prompt for update if old
+- [ ] account for entry with an option but no message - \$`gec --[option]`

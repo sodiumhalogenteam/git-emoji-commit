@@ -6,7 +6,7 @@ const inquirer = require("inquirer");
 var pjson = require("./package.json");
 
 program
-  .version("3.0.0")
+  .version(pjson.version)
   .option("-s, --style", "edit/add styles")
   .option("-b, --bug", "squash bugs")
   .option("-i, --improve", "refactor or rework")

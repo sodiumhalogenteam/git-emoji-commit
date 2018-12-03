@@ -1,4 +1,6 @@
-# git-emoji-commit
+# Git Emoji Commit
+
+[![git-emoji-commit npm version](https://img.shields.io/npm/v/git-emoji-commit.svg)](https://npmjs.org/package/git-emoji-commit)
 
 Simple CLI to encourage more concise commits.
 
@@ -6,24 +8,24 @@ Simple CLI to encourage more concise commits.
 
 ## setup
 
-* $ `npm i -g git-emoji-commit`
-* $ `git-emoji-commit --help` to see options
+- \$ `npm i -g git-emoji-commit`
+- \$ `git-emoji-commit --help` to see options
 
 ## usages
 
-* $`git-emoji-commit` or
-* $`gec` or
-* $`gec "YOUR COMMIT MESSAGE"` or
-* $`gec --[option] "YOUR COMMIT MESSAGE"`
+- \$`git-emoji-commit` or
+- \$`gec` or
+- \$`gec "YOUR COMMIT MESSAGE"` or
+- \$`gec --[option] "YOUR COMMIT MESSAGE"`
 
 ## git-emoji-commit workflow
 
-* $`git add .` or create alias $`ga`
-* $`git-emoji-commit` or $`gec`
-* $`git pull` or create alias $`gl`
-* $`git push` or create alias $`gp`
+- \$`git add .` or create alias \$`ga`
+- \$`git-emoji-commit` or \$`gec`
+- \$`git pull` or create alias \$`gl`
+- \$`git push` or create alias \$`gp`
 
 ## todos
 
-* [ ] account for entry with an option but no message - $`gec --[option]`
-* [ ] refactor emoji option prompt
+- [ ] account for entry with an option but no message - \$`gec --[option]`
+- [ ] refactor emoji option prompt

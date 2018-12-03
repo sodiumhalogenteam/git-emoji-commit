@@ -1,4 +1,4 @@
-# Git Emoji Commit
+# Git Emoji Commit 📦
 
 [![git-emoji-commit npm version](https://img.shields.io/npm/v/git-emoji-commit.svg)](https://npmjs.org/package/git-emoji-commit)
 

@@ -7,13 +7,13 @@ var pjson = require("./package.json");
 
 program
   .version(pjson.version)
-  .option("-s, --style", "edit/add styles")
   .option("-b, --bug", "squash bugs")
+  .option("-d, --doc", "add/edit documentation & content")
   .option("-i, --improve", "refactor or rework")
   .option("-n, --new", "add new feature")
-  .option("-d, --doc", "add/edit documentation & content")
-  .option("-r, --try", "add untested to production")
+  .option("-s, --style", "edit/add styles")
   .option("-t, --test", "add/edit test")
+  .option("-r, --try", "add untested to production")
   .parse(process.argv);
 
 var questions = [
@@ -69,16 +69,16 @@ if (program.style) {
   makeCommit(`git commit -m "💅  STYLE: ${program.args}"`);
 } else if (program.bug) {
   makeCommit(`git commit -m "🐛  BUG: ${program.args}"`);
+} else if (program.doc) {
+  makeCommit(`git commit -m "📖  DOC: ${program.args}"`);
 } else if (program.improve) {
   makeCommit(`git commit -m "⚡  IMPROVE: ${program.args}"`);
 } else if (program.new) {
   makeCommit(`git commit -m "📦  NEW: ${program.args}"`);
-} else if (program.doc) {
-  makeCommit(`git commit -m "📖  DOC: ${program.args}"`);
-} else if (program.try) {
-  makeCommit(`git commit -m "🤞  TRY: ${program.args}"`);
 } else if (program.test) {
   makeCommit(`git commit -m "✅  TEST: ${program.args}"`);
+} else if (program.try) {
+  makeCommit(`git commit -m "🤞  TRY: ${program.args}"`);
 } else {
   // if no cli args
   console.log("Pick a commit type. See more: gc --help");

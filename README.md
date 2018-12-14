@@ -30,3 +30,7 @@ Simple CLI to encourage more concise commits.
 - [x] check what version user has, prompt for update if old
 - [ ] refactor emoji option prompt
 - [ ] account for entry with an option but no message - \$`gec --[option]`
+
+## low todos
+
+- [ ] update example gif

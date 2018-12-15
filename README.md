@@ -28,7 +28,8 @@ Simple CLI to encourage more concise commits.
 ## todos
 
 - [x] check what version user has, prompt for update if old
-- [ ] refactor emoji option prompt
+- [ ] compile for NPM package
+- [ ] output log messages after commit (can't see JEST output on git hooks)
 - [ ] account for entry with an option but no message - \$`gec --[option]`
 
 ## low todos

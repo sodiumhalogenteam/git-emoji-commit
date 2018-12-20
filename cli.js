@@ -51,7 +51,7 @@ const checkVersion = () => {
         `\x1b[32m`, // green
         `😎  Update available: ${stdout}`,
         "\x1b[37m", // white
-        `run $ npm update i -g git-emoji-commit`
+        `run $ npm update -g git-emoji-commit`
       );
   });
 };

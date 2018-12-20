@@ -66,8 +66,8 @@ const makeCommit = command => {
     }
 
     // the *entire* stdout and stderr (buffered)
-    console.log(`${stdout.toString("utf8")}`);
-    console.log(`${stderr.toString("utf8")}`);
+    if (stdout.length > 0) console.log(`${stdout.toString("utf8")}`);
+    if (stderr.length > 0) console.log(`${stderr.toString("utf8")}`);
     checkVersion();
   });
 };

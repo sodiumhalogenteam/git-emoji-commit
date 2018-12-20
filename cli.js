@@ -60,7 +60,8 @@ const makeCommit = command => {
   exec(command, function(err, stdout, stderr) {
     if (err) {
       console.log(
-        'Git-Emoji-Commit couldn\'t execute the "git commit -m" command. 🤕'
+        // 'Git-Emoji-Commit couldn\'t execute the "git commit -m" command. 🤕\n',
+        err
       );
       return;
     }

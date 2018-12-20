@@ -58,7 +58,16 @@ const checkVersion = () => {
 
 const makeCommit = command => {
   exec(command, function(err, stdout, stderr) {
-    console.log(stdout.toString("utf8"));
+    if (err) {
+      console.log(
+        'Git-Emoji-Commit couldn\'t execute the "git commit -m" command. 🤕'
+      );
+      return;
+    }
+
+    // the *entire* stdout and stderr (buffered)
+    console.log(`Console: ${stdout.toString("utf8")}`);
+    console.log(`stderr: ${stderr.toString("utf8")}`);
     checkVersion();
   });
 };

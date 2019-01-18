@@ -98,7 +98,7 @@ if (program.style) {
 
     // check for commit message
     if (!program.args[0] || !program.args.length || !program.args) {
-      // TODO: refactor to prevent having more than one inquirer in another inquirer - Chance
+      // TODO: refactor to prevent having nested inquirer - Chance
       inquirer
         .prompt({
           type: "input",

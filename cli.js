@@ -27,6 +27,7 @@ var questions = [
       "⚡  IMPROVE: refactoring",
       "📦  NEW: addition",
       "💅  STYLE: layout or style change",
+      "📝  CONTENT: content changes",
       "✅  TEST: add/edit tests",
       "🤞  TRY: add untested to production"
     ],

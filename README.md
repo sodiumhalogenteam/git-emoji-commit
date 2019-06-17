@@ -20,10 +20,10 @@ Simple CLI to encourage more concise commits.
 
 ## git-emoji-commit workflow
 
-- \$`git add .` or create alias \$`ga`
-- \$`git-emoji-commit` or \$`gec`
-- \$`git pull` or create alias \$`gl`
-- \$`git push` or create alias \$`gp`
+- \$`git add .`
+- \$`gec` to make a commit
+- \$`git pull`
+- \$`git push`
 
 ## todos
 

@@ -22,11 +22,11 @@ var questions = [
     name: "commitType",
     message: "Select a commit message type:",
     choices: [
+      "📦  NEW: addition",
+      "💅  STYLE: layout or style change",
       "🐛  BUG: fix/squash bug",
       "📖  DOC: documentation",
       "⚡  IMPROVE: refactoring",
-      "📦  NEW: addition",
-      "💅  STYLE: layout or style change",
       "📝  CONTENT: content changes",
       "✅  TEST: add/edit tests",
       "🤞  TRY: add untested to production"

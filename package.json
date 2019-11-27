@@ -34,6 +34,9 @@
     "inquirer": "^5.2.0"
   },
   "keywords": [
-    "git"
+    "git",
+    "emojis",
+    "git emojis",
+    "commit messages"
   ]
 }

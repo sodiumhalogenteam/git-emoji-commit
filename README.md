@@ -30,7 +30,7 @@ Simple CLI to encourage more concise commits.
 
 - [x] check what version user has, prompt for update if old
 - [x] output log messages after commit (can't see JEST output on git hooks)
-- [ ] compile for NPM package
+- [ ] landing page
 - [ ] add tests
 - [ ] account for entry with an option but no message - \$`gec --[option]`
 

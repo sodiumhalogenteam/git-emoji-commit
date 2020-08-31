@@ -15,6 +15,7 @@ program
   .option("-s, --style", "edit/add styles")
   .option("-t, --test", "add/edit test")
   .option("-r, --try", "add untested to production")
+  .option("-c, --chore", "add untested to production")
   .parse(process.argv);
 
 var questions = [
@@ -26,10 +27,11 @@ var questions = [
       "📦  FEAT: new feature",
       "💅  STYLE: layout or style change",
       "🐛  FIX: fix/squash bug",
+      "🧹  CHORE: update packages, gitignore etc; (no prod code)",
       "📖  DOC: documentation",
       "⚡  REFACTOR: refactoring",
       "📝  CONTENT: content changes",
-      "✅  TEST: add/edit tests",
+      "✅  TEST: add/edit tests (no prod code)",
       "🤞  TRY: add untested to production",
     ],
     when: function (answers) {
@@ -88,6 +90,8 @@ if (program.style) {
   makeCommit(`git commit -m "✅  TEST: ${program.args}"`);
 } else if (program.try) {
   makeCommit(`git commit -m "🤞  TRY: ${program.args}"`);
+} else if (program.chore) {
+  makeCommit(`git commit -m "🧹  CHORE: ${program.args}"`);
 } else {
   // if no cli args
   console.log("Pick a commit type. See more: gc --help");

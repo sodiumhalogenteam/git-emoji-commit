@@ -10,7 +10,8 @@ program
   .option("-b, --bug", "squash bugs")
   .option("-d, --doc", "add/edit documentation & content")
   .option("-i, --improve", "refactor or rework")
-  .option("-n, --new", "add new feature")
+  .option("-n, --new", "add new feature (depricated)")
+  .option("-f, --feat", "add new feature")
   .option("-s, --style", "edit/add styles")
   .option("-t, --test", "add/edit test")
   .option("-r, --try", "add untested to production")
@@ -22,11 +23,11 @@ var questions = [
     name: "commitType",
     message: "Select a commit message type:",
     choices: [
-      "📦  NEW: addition",
+      "📦  FEAT: new feature",
       "💅  STYLE: layout or style change",
-      "🐛  BUG: fix/squash bug",
+      "🐛  FIX: fix/squash bug",
       "📖  DOC: documentation",
-      "⚡  IMPROVE: refactoring",
+      "⚡  REFACTOR: refactoring",
       "📝  CONTENT: content changes",
       "✅  TEST: add/edit tests",
       "🤞  TRY: add untested to production",
@@ -76,13 +77,13 @@ const makeCommit = (command) => {
 if (program.style) {
   makeCommit(`git commit -m "💅  STYLE: ${program.args}"`);
 } else if (program.bug) {
-  makeCommit(`git commit -m "🐛  BUG: ${program.args}"`);
+  makeCommit(`git commit -m "🐛  FIX: ${program.args}"`);
 } else if (program.doc) {
   makeCommit(`git commit -m "📖  DOC: ${program.args}"`);
 } else if (program.improve) {
-  makeCommit(`git commit -m "⚡  IMPROVE: ${program.args}"`);
+  makeCommit(`git commit -m "⚡  REFACTOR: ${program.args}"`);
 } else if (program.new) {
-  makeCommit(`git commit -m "📦  NEW: ${program.args}"`);
+  makeCommit(`git commit -m "📦  FEAT: ${program.args}"`);
 } else if (program.test) {
   makeCommit(`git commit -m "✅  TEST: ${program.args}"`);
 } else if (program.try) {

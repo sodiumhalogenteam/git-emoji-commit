@@ -29,24 +29,21 @@ var questions = [
       "⚡  IMPROVE: refactoring",
       "📝  CONTENT: content changes",
       "✅  TEST: add/edit tests",
-      "🤞  TRY: add untested to production"
+      "🤞  TRY: add untested to production",
     ],
-    when: function(answers) {
+    when: function (answers) {
       return answers.comments !== "Nope, all good!";
-    }
-  }
+    },
+  },
 ];
 
 // check users global version
 const checkVersion = () => {
   // only check major and minor versioning
-  exec("npm show git-emoji-commit version", function(err, stdout, stderr) {
+  exec("npm show git-emoji-commit version", function (err, stdout, stderr) {
     if (
       pjson.version.trim().slice(0, -1) !=
-      stdout
-        .trim()
-        .toString("utf8")
-        .slice(0, -1)
+      stdout.trim().toString("utf8").slice(0, -1)
     )
       console.log(
         `\x1b[32m`, // green
@@ -57,8 +54,8 @@ const checkVersion = () => {
   });
 };
 
-const makeCommit = command => {
-  exec(command, function(err, stdout, stderr) {
+const makeCommit = (command) => {
+  exec(command, function (err, stdout, stderr) {
     if (err) {
       console.log(
         // 'Git-Emoji-Commit couldn\'t execute the "git commit -m" command. 🤕\n',
@@ -93,7 +90,7 @@ if (program.style) {
 } else {
   // if no cli args
   console.log("Pick a commit type. See more: gc --help");
-  inquirer.prompt(questions).then(answers => {
+  inquirer.prompt(questions).then((answers) => {
     let commitType = JSON.stringify(answers.commitType, null, "  ");
     let commitTypeCleaned = commitType.replace(/\:(.*)/, "").replace(/"/, "");
 
@@ -105,15 +102,15 @@ if (program.style) {
           type: "input",
           name: "commitMessage",
           message: "What's your commit title/message?",
-          validate: function(value) {
+          validate: function (value) {
             if (value !== "") {
               return true;
             }
             console.log("😕  Please enter a valid commit message.");
             return 0;
-          }
+          },
         })
-        .then(answers => {
+        .then((answers) => {
           makeCommit(
             `git commit -m "${commitTypeCleaned}: ${answers.commitMessage}"`
           );

@@ -5,6 +5,59 @@ const { exec } = require("child_process");
 const inquirer = require("inquirer");
 var pjson = require("./package.json");
 
+const options = {
+  bug: {
+    title: "FEAT",
+    emojiTitle: "📦  FEAT",
+    description: "squash bugs",
+  },
+  doc: {
+    title: "STYLE",
+    emojiTitle: "💅  STYLE",
+    description: "add/edit documentation & content",
+  },
+  improve: {
+    title: "FIX",
+    emojiTitle: "🐛  FIX",
+    description: "refactor or rework",
+  },
+  new: {
+    title: "CHORE",
+    emojiTitle: "🧹  CHORE",
+    description: "add new feature (depricated)",
+  },
+  feat: {
+    title: "DOC",
+    emojiTitle: "📖  DOC",
+    description: "add new feature",
+  },
+  style: {
+    title: "REFACTOR",
+    emojiTitle: "⚡  REFACTOR",
+    description: "edit/add styles",
+  },
+  test: {
+    title: "CONTENT",
+    emojiTitle: "📝  CONTENT",
+    description: "add/edit test",
+  },
+  try: {
+    title: "TEST",
+    emojiTitle: "✅  TEST",
+    description: "add untested to production",
+  },
+  chore: {
+    title: "TRY",
+    emojiTitle: "🤞  TRY",
+    description: "add untested to production",
+  },
+  build: {
+    title: "BUILD",
+    emojiTitle: "🚀  BUILD",
+    description: "build for production",
+  },
+};
+
 program
   .version(pjson.version)
   .option("-b, --bug", "squash bugs")

@@ -16,6 +16,7 @@ program
   .option("-t, --test", "add/edit test")
   .option("-r, --try", "add untested to production")
   .option("-c, --chore", "add untested to production")
+  .option("--build", "build for production")
   .parse(process.argv);
 
 var questions = [
@@ -33,6 +34,7 @@ var questions = [
       "📝  CONTENT: content changes",
       "✅  TEST: add/edit tests (no prod code)",
       "🤞  TRY: add untested to production",
+      "🚀  BUILD: build for production",
     ],
     when: function (answers) {
       return answers.comments !== "Nope, all good!";
@@ -90,6 +92,8 @@ if (program.style) {
   makeCommit(`git commit -m "✅  TEST: ${program.args}"`);
 } else if (program.try) {
   makeCommit(`git commit -m "🤞  TRY: ${program.args}"`);
+} else if (program.build) {
+  makeCommit(`git commit -m "🚀  BUILD: ${program.args}"`);
 } else if (program.chore) {
   makeCommit(`git commit -m "🧹  CHORE: ${program.args}"`);
 } else {

@@ -7,44 +7,43 @@ var pjson = require("./package.json");
 
 const options = {
   bug: {
-    title: "FEAT",
-    emojiTitle: "📦  FEAT",
+    title: "FIX",
+    emojiTitle: "🐛  FIX",
     description: "squash bugs",
   },
   doc: {
-    title: "STYLE",
-    emojiTitle: "💅  STYLE",
-    description: "add/edit documentation & content",
+    title: "DOC",
+    emojiTitle: "📖  DOC",
+    description: "add new feature",
   },
   improve: {
-    title: "FIX",
-    emojiTitle: "🐛  FIX",
+    title: "REFACTOR",
+    emojiTitle: "⚡  REFACTOR",
     description: "refactor or rework",
   },
   new: {
     title: "CHORE",
     emojiTitle: "🧹  CHORE",
-    description: "add new feature (depricated)",
   },
   feat: {
-    title: "DOC",
-    emojiTitle: "📖  DOC",
-    description: "add new feature",
+    title: "FEAT",
+    emojiTitle: "📦  FEAT",
+    description: "add new feature (depricated)",
   },
   style: {
-    title: "REFACTOR",
-    emojiTitle: "⚡  REFACTOR",
+    title: "STYLE",
+    emojiTitle: "💅  STYLE",
     description: "edit/add styles",
   },
   test: {
     title: "CONTENT",
     emojiTitle: "📝  CONTENT",
-    description: "add/edit test",
+    description: "add/edit documentation & content",
   },
   try: {
     title: "TEST",
     emojiTitle: "✅  TEST",
-    description: "add untested to production",
+    description: "add/edit test",
   },
   chore: {
     title: "TRY",
@@ -63,7 +62,6 @@ program
   .option("-b, --bug", "squash bugs")
   .option("-d, --doc", "add/edit documentation & content")
   .option("-i, --improve", "refactor or rework")
-  .option("-n, --new", "add new feature (depricated)")
   .option("-f, --feat", "add new feature")
   .option("-s, --style", "edit/add styles")
   .option("-t, --test", "add/edit test")
@@ -77,18 +75,7 @@ var questions = [
     type: "list",
     name: "commitType",
     message: "Select a commit message type:",
-    choices: [
-      "📦  FEAT: new feature",
-      "💅  STYLE: layout or style change",
-      "🐛  FIX: fix/squash bug",
-      "🧹  CHORE: update packages, gitignore etc; (no prod code)",
-      "📖  DOC: documentation",
-      "⚡  REFACTOR: refactoring",
-      "📝  CONTENT: content changes",
-      "✅  TEST: add/edit tests (no prod code)",
-      "🤞  TRY: add untested to production",
-      "🚀  BUILD: build for production",
-    ],
+    choices: [...options.map((o) => o.emojiTitle)],
     when: function (answers) {
       return answers.comments !== "Nope, all good!";
     },

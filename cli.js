@@ -105,7 +105,7 @@ if (program.style) {
 
     // check for commit message
     if (!program.args[0] || !program.args.length || !program.args) {
-      // TODO: refactor to prevent having nested inquirer - Chance
+      // TODO: refactor to prevent having nested inquirer - Chance Smith 4/11/2023
       inquirer
         .prompt({
           type: "input",

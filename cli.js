@@ -1,24 +1,39 @@
 #!/usr/bin/env node
 
 const program = require("commander");
-const { exec } = require("child_process");
+const { exec: Exec } = require("child_process");
 const inquirer = require("inquirer");
 var pjson = require("./package.json");
 
-program
-  .version(pjson.version)
-  .option("-f, --feat", "add new feature")
-  .option("-s, --style", "edit/add styles")
-  .option("-x, --fix", "squash bugs")
-  .option("-c, --chore", "add untested to production")
-  .option("-d, --doc", "add/edit documentation & content")
-  .option("-r, --refactor", "refactor or rework")
-  .option("-t, --test", "add/edit test")
-  .option("-y, --try", "add untested to production")
-  .option("-b, --build", "build for production")
-  .parse(process.argv);
+const commitTypes = {
+  feat: "📦  FEAT",
+  style: "💅  STYLE",
+  fix: "🐛  FIX",
+  chore: "🧹  CHORE",
+  doc: "📖  DOC",
+  refactor: "⚡  REFACTOR",
+  test: "✅  TEST",
+  try: "🤞  TRY",
+  build: "🚀  BUILD",
+};
 
 var questions = [
+  {
+    type: "input",
+    name: "commitMessage",
+    message: "What's your commit title/message?",
+    validate: function (value) {
+      if (value !== "") {
+        return true;
+      }
+      console.log("😕  Please enter a valid commit message.");
+      return 0;
+    },
+    when: function (answers) {
+      // there is no commit message
+      return !program.args[0] || !program.args.length;
+    },
+  },
   {
     type: "list",
     name: "commitType",
@@ -41,89 +56,85 @@ var questions = [
   },
 ];
 
-// check users global version
-const checkVersion = () => {
-  // only check major and minor versioning
-  exec("npm show git-emoji-commit version", function (err, stdout, stderr) {
+program
+  .version(pjson.version)
+  .option("-f, --feat", "add new feature")
+  .option("-s, --style", "edit/add styles")
+  .option("-x, --fix", "squash bugs")
+  .option("-c, --chore", "add untested to production")
+  .option("-d, --doc", "add/edit documentation & content")
+  .option("-r, --refactor", "refactor or rework")
+  .option("-t, --test", "add/edit test")
+  .option("-y, --try", "add untested to production")
+  .option("-b, --build", "build for production")
+  .parse(process.argv);
+
+const exec = (command) => {
+  return new Promise((resolve, reject) => {
+    Exec(command, (error, stdout, stderr) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve({ stdout, stderr });
+      }
+    });
+  });
+};
+
+async function checkVersion() {
+  try {
+    const { stdout } = await exec("npm show git-emoji-commit version");
     const latestVersion = stdout.trim().toString("utf8");
     const currentVersion = pjson.version.trim().slice(0, -1);
     if (currentVersion != latestVersion.slice(0, -1))
       console.log(
-        `\x1b[32m`, // green
+        "\x1b[32m", // green
         `😎  Update available: ${latestVersion}`,
         "\x1b[37m", // white
         `run $ npm update -g git-emoji-commit`
       );
-  });
-};
+  } catch (err) {
+    console.error("Error checking for updates:", err);
+  }
+}
 
-const makeCommit = (command) => {
-  exec(command, function (err, stdout, stderr) {
-    if (err) {
-      console.log(
-        // 'Git-Emoji-Commit couldn\'t execute the "git commit -m" command. 🤕\n',
-        err
-      );
-      return;
-    }
-
-    // the *entire* stdout and stderr (buffered)
+async function makeCommit(commitType, commitMessage) {
+  try {
+    const { stdout, stderr } = await exec(
+      `git commit -m "${commitType}: ${commitMessage}"`
+    );
     if (stdout.length > 0) console.log(`[] ${stdout.toString("utf8")}`);
     if (stderr.length > 0) console.log(`{} ${stderr.toString("utf8")}`);
     checkVersion();
-  });
-};
-
-// TODO: need to check for commitType without a program.args - Chance
-
-const commitTypes = {
-  feat: '📦  FEAT',
-  style: '💅  STYLE',
-  fix: '🐛  FIX',
-  chore: '🧹  CHORE',
-  doc: '📖  DOC',
-  refactor: '⚡  REFACTOR',
-  test: '✅  TEST',
-  try: '🤞  TRY',
-  build: '🚀  BUILD'
-};
-
-// if no cli args
-const noMatchingCommitType = !Object.values(commitTypes).includes(program.args[0])
-if (noMatchingCommitType) {
-  console.log("Pick a commit type. See more: gc --help");
-  inquirer.prompt(questions).then((answers) => {
-    let commitType = JSON.stringify(answers.commitType, null, "  ");
-    let commitTypeCleaned = commitType.replace(/\:(.*)/, "").replace(/"/, "");
-
-    // check for commit message
-    const noArgs = !program.args[0] || !program.args.length
-    if (noArgs) {
-      // TODO: refactor to prevent having nested inquirer - Chance Smith 4/11/2023
-      inquirer
-        .prompt({
-          type: "input",
-          name: "commitMessage",
-          message: "What's your commit title/message?",
-          validate: function (value) {
-            if (value !== "") {
-              return true;
-            }
-            console.log("😕  Please enter a valid commit message.");
-            return 0;
-          },
-        })
-        .then((answers) => {
-          makeCommit(
-            `git commit -m "${commitTypeCleaned}: ${answers.commitMessage}"`
-          );
-        });
-    }
-   
-    if (program.args[0]) {
-      makeCommit(`git commit -m "${commitTypeCleaned}: ${program.args}"`);
-    }
-  });
-} else {
-  makeCommit(`git commit -m "${program.args}"`);
+  } catch (err) {
+    console.error("Error executing git commit:", err);
+  }
 }
+
+(async function main() {
+  const commitMessage = program.args[0];
+
+  if (!commitMessage) {
+    const answers = await inquirer.prompt(questions);
+    const commitType = answers.commitType
+      .replace(/\:(.*)/, "")
+      .replace(/"/, "");
+    await makeCommit(commitType, answers.commitMessage);
+  } else {
+    const commitType = Object.values(commitTypes).find((type) =>
+      commitMessage.startsWith(type)
+    );
+
+    if (!commitType) {
+      console.log("Invalid commit type. See more: gc --help");
+      const answers = await inquirer.prompt(questions);
+      const selectedCommitType = answers.commitType
+        .replace(/\:(.*)/, "")
+        .replace(/"/, "");
+      await makeCommit(selectedCommitType, commitMessage);
+    } else {
+      const message = commitMessage.slice(commitType.length + 1);
+      await makeCommit(commitType, message);
+    }
+  }
+})();

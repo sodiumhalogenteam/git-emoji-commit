@@ -3,6 +3,7 @@
   "version": "1.19.1",
   "description": "Simple CLI to encourage more concise commits using emojis.",
   "main": "cli.js",
+  "type": "module",
   "bin": {
     "git-emoji-commit": "cli.js",
     "gec": "cli.js"
@@ -30,8 +31,8 @@
   },
   "homepage": "https://github.com/sodiumhalogenteam/git-emoji#readme",
   "dependencies": {
-    "commander": "^2.15.1",
-    "inquirer": "^5.2.0"
+    "commander": "^10.0.0",
+    "inquirer": "^9.1.5"
   },
   "keywords": [
     "git",

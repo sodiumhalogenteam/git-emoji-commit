@@ -1,9 +1,14 @@
 #!/usr/bin/env node
 
-const program = require("commander");
-const { exec: Exec } = require("child_process");
-const inquirer = require("inquirer");
-var pjson = require("./package.json");
+// const program = require("commander");
+// const { exec: Exec } = require("child_process");
+// const inquirer = require("inquirer");
+// var pjson = require("./package.json");
+
+import {program} from "commander";
+import { exec as Exec } from "child_process";
+import inquirer from "inquirer";
+import pjson from "./package.json" assert { type: "json" };
 
 const commitTypes = {
   feat: {
@@ -88,8 +93,12 @@ const questions = [
   },
 ];
 
+if (process.argv.includes('--version') || process.argv.includes('-V')) {
+  console.log(`Version: ${pjson.version}`);
+  process.exit(0);
+}
+
 program
-  .version(pjson.version)
   .option("-f, --feat", "add new feature")
   .option("-s, --style", "edit/add styles")
   .option("-x, --fix", "squash bugs")

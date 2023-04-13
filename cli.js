@@ -45,13 +45,12 @@ var questions = [
 const checkVersion = () => {
   // only check major and minor versioning
   exec("npm show git-emoji-commit version", function (err, stdout, stderr) {
-    if (
-      pjson.version.trim().slice(0, -1) !=
-      stdout.trim().toString("utf8").slice(0, -1)
-    )
+    const latestVersion = stdout.trim().toString("utf8");
+    const currentVersion = pjson.version.trim().slice(0, -1);
+    if (currentVersion != latestVersion.slice(0, -1))
       console.log(
         `\x1b[32m`, // green
-        `😎  Update available: ${stdout}`,
+        `😎  Update available: ${latestVersion}`,
         "\x1b[37m", // white
         `run $ npm update -g git-emoji-commit`
       );
@@ -90,14 +89,16 @@ const commitTypes = {
 };
 
 // if no cli args
-if (!Object.values(commitTypes).includes(program.args[0])) {
+const noMatchingCommitType = !Object.values(commitTypes).includes(program.args[0])
+if (noMatchingCommitType) {
   console.log("Pick a commit type. See more: gc --help");
   inquirer.prompt(questions).then((answers) => {
     let commitType = JSON.stringify(answers.commitType, null, "  ");
     let commitTypeCleaned = commitType.replace(/\:(.*)/, "").replace(/"/, "");
 
     // check for commit message
-    if (!program.args[0] || !program.args.length || !program.args) {
+    const noArgs = !program.args[0] || !program.args.length
+    if (noArgs) {
       // TODO: refactor to prevent having nested inquirer - Chance Smith 4/11/2023
       inquirer
         .prompt({

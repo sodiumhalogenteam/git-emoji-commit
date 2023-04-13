@@ -77,26 +77,20 @@ const makeCommit = (command) => {
 
 // TODO: need to check for commitType without a program.args - Chance
 
-if (program.feat) {
-  makeCommit(`git commit -m "📦  FEAT: ${program.args}"`);
-} else if (program.style) {
-  makeCommit(`git commit -m "💅  STYLE: ${program.args}"`);
-} else if (program.fix) {
-  makeCommit(`git commit -m "🐛  FIX: ${program.args}"`);
-} else if (program.chore) {
-  makeCommit(`git commit -m "🧹  CHORE: ${program.args}"`);
-} else if (program.doc) {
-  makeCommit(`git commit -m "📖  DOC: ${program.args}"`);
-} else if (program.refactor) {
-  makeCommit(`git commit -m "⚡  REFACTOR: ${program.args}"`);
-} else if (program.test) {
-  makeCommit(`git commit -m "✅  TEST: ${program.args}"`);
-} else if (program.try) {
-  makeCommit(`git commit -m "🤞  TRY: ${program.args}"`);
-} else if (program.build) {
-  makeCommit(`git commit -m "🚀  BUILD: ${program.args}"`);
-} else {
-  // if no cli args
+const commitTypes = {
+  feat: '📦  FEAT',
+  style: '💅  STYLE',
+  fix: '🐛  FIX',
+  chore: '🧹  CHORE',
+  doc: '📖  DOC',
+  refactor: '⚡  REFACTOR',
+  test: '✅  TEST',
+  try: '🤞  TRY',
+  build: '🚀  BUILD'
+};
+
+// if no cli args
+if (!Object.values(commitTypes).includes(program.args[0])) {
   console.log("Pick a commit type. See more: gc --help");
   inquirer.prompt(questions).then((answers) => {
     let commitType = JSON.stringify(answers.commitType, null, "  ");
@@ -124,9 +118,11 @@ if (program.feat) {
           );
         });
     }
-
+   
     if (program.args[0]) {
       makeCommit(`git commit -m "${commitTypeCleaned}: ${program.args}"`);
     }
   });
+} else {
+  makeCommit(`git commit -m "${program.args}"`);
 }

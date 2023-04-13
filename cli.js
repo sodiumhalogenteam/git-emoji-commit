@@ -98,6 +98,18 @@ async function checkVersion() {
   }
 }
 
+async function hasStagedFiles() {
+  try {
+    await exec("git diff --cached --quiet");
+    return false;
+  } catch (err) {
+    if (err.code === 1) {
+      return true;
+    }
+    throw err;
+  }
+}
+
 async function makeCommit(commitType, commitMessage) {
   try {
     const { stdout, stderr } = await exec(
@@ -107,11 +119,24 @@ async function makeCommit(commitType, commitMessage) {
     if (stderr.length > 0) console.log(`{} ${stderr.toString("utf8")}`);
     checkVersion();
   } catch (err) {
-    console.error("Error executing git commit:", err);
+    if (err.message.includes("nothing to commit, working tree clean")) {
+      console.log(
+        "There are no files staged to commit. Please stage some files before committing."
+      );
+    } else {
+      console.error(err);
+    }
   }
 }
 
 (async function main() {
+  if (!(await hasStagedFiles())) {
+    console.log(
+      "There are no files staged to commit. Please stage some files before committing."
+    );
+    return;
+  }
+
   const commitMessage = program.args[0];
 
   if (!commitMessage) {
@@ -126,7 +151,6 @@ async function makeCommit(commitType, commitMessage) {
     );
 
     if (!commitType) {
-      console.log("Invalid commit type. See more: gc --help");
       const answers = await inquirer.prompt(questions);
       const selectedCommitType = answers.commitType
         .replace(/\:(.*)/, "")

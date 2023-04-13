@@ -1,5 +1,10 @@
 # Local Dev >> Git Emoji Commit 📦
 
+## local setup
+
+- `npm install`
+- `node cli.js` to run the script (ex: `node cli.js "YOUR COMMIT MESSAGE"`)
+
 ## local package testing before publish
 
 - uninstall global version \$`npm uninstall -g git-emoji-commit`

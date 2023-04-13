@@ -7,16 +7,15 @@ var pjson = require("./package.json");
 
 program
   .version(pjson.version)
-  .option("-b, --bug", "squash bugs")
-  .option("-d, --doc", "add/edit documentation & content")
-  .option("-i, --improve", "refactor or rework")
-  .option("-n, --new", "add new feature (depricated)")
   .option("-f, --feat", "add new feature")
   .option("-s, --style", "edit/add styles")
-  .option("-t, --test", "add/edit test")
-  .option("-r, --try", "add untested to production")
+  .option("-x, --fix", "squash bugs")
   .option("-c, --chore", "add untested to production")
-  .option("--build", "build for production")
+  .option("-d, --doc", "add/edit documentation & content")
+  .option("-r, --refactor", "refactor or rework")
+  .option("-t, --test", "add/edit test")
+  .option("-y, --try", "add untested to production")
+  .option("-b, --build", "build for production")
   .parse(process.argv);
 
 var questions = [
@@ -70,32 +69,32 @@ const makeCommit = (command) => {
     }
 
     // the *entire* stdout and stderr (buffered)
-    if (stdout.length > 0) console.log(`${stdout.toString("utf8")}`);
-    if (stderr.length > 0) console.log(`${stderr.toString("utf8")}`);
+    if (stdout.length > 0) console.log(`[] ${stdout.toString("utf8")}`);
+    if (stderr.length > 0) console.log(`{} ${stderr.toString("utf8")}`);
     checkVersion();
   });
 };
 
 // TODO: need to check for commitType without a program.args - Chance
 
-if (program.style) {
+if (program.feat) {
+  makeCommit(`git commit -m "📦  FEAT: ${program.args}"`);
+} else if (program.style) {
   makeCommit(`git commit -m "💅  STYLE: ${program.args}"`);
-} else if (program.bug) {
+} else if (program.fix) {
   makeCommit(`git commit -m "🐛  FIX: ${program.args}"`);
+} else if (program.chore) {
+  makeCommit(`git commit -m "🧹  CHORE: ${program.args}"`);
 } else if (program.doc) {
   makeCommit(`git commit -m "📖  DOC: ${program.args}"`);
-} else if (program.improve) {
+} else if (program.refactor) {
   makeCommit(`git commit -m "⚡  REFACTOR: ${program.args}"`);
-} else if (program.new) {
-  makeCommit(`git commit -m "📦  FEAT: ${program.args}"`);
 } else if (program.test) {
   makeCommit(`git commit -m "✅  TEST: ${program.args}"`);
 } else if (program.try) {
   makeCommit(`git commit -m "🤞  TRY: ${program.args}"`);
 } else if (program.build) {
   makeCommit(`git commit -m "🚀  BUILD: ${program.args}"`);
-} else if (program.chore) {
-  makeCommit(`git commit -m "🧹  CHORE: ${program.args}"`);
 } else {
   // if no cli args
   console.log("Pick a commit type. See more: gc --help");

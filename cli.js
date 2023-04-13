@@ -6,18 +6,59 @@ const inquirer = require("inquirer");
 var pjson = require("./package.json");
 
 const commitTypes = {
-  feat: "📦  FEAT",
-  style: "💅  STYLE",
-  fix: "🐛  FIX",
-  chore: "🧹  CHORE",
-  doc: "📖  DOC",
-  refactor: "⚡  REFACTOR",
-  test: "✅  TEST",
-  try: "🤞  TRY",
-  build: "🚀  BUILD",
+  feat: {
+    emoji: "📦",
+    name: "FEAT",
+    description: "new feature",
+  },
+  style: {
+    emoji: "💅",
+    name: "STYLE",
+    description: "layout or style change",
+  },
+  fix: {
+    emoji: "🐛",
+    name: "FIX",
+    description: "fix/squash bug",
+  },
+  chore: {
+    emoji: "🧹",
+    name: "CHORE",
+    description: "update packages, gitignore etc; (no prod code)",
+  },
+  doc: {
+    emoji: "📖",
+    name: "DOC",
+    description: "documentation",
+  },
+  refactor: {
+    emoji: "🛠 ", // needs extra space
+    name: "REFACTOR",
+    description: "refactoring",
+  },
+  content: {
+    emoji: "📝",
+    name: "CONTENT",
+    description: "content changes",
+  },
+  test: {
+    emoji: "✅",
+    name: "TEST",
+    description: "add/edit tests (no prod code)",
+  },
+  try: {
+    emoji: "🤞",
+    name: "TRY",
+    description: "add untested to production",
+  },
+  build: {
+    emoji: "🚀",
+    name: "BUILD",
+    description: "build for production",
+  },
 };
 
-var questions = [
+const questions = [
   {
     type: "input",
     name: "commitMessage",
@@ -38,18 +79,9 @@ var questions = [
     type: "list",
     name: "commitType",
     message: "Select a commit message type:",
-    choices: [
-      "📦  FEAT: new feature",
-      "💅  STYLE: layout or style change",
-      "🐛  FIX: fix/squash bug",
-      "🧹  CHORE: update packages, gitignore etc; (no prod code)",
-      "📖  DOC: documentation",
-      "⚡  REFACTOR: refactoring",
-      "📝  CONTENT: content changes",
-      "✅  TEST: add/edit tests (no prod code)",
-      "🤞  TRY: add untested to production",
-      "🚀  BUILD: build for production",
-    ],
+    choices: Object.values(commitTypes).map(
+      (type) => `${type.emoji} ${type.name}: ${type.description}`
+    ),
     when: function (answers) {
       return answers.comments !== "Nope, all good!";
     },
@@ -147,18 +179,18 @@ async function makeCommit(commitType, commitMessage) {
     await makeCommit(commitType, answers.commitMessage);
   } else {
     const commitType = Object.values(commitTypes).find((type) =>
-      commitMessage.startsWith(type)
+      commitMessage.startsWith(`${type.emoji}  ${type.name}`)
     );
 
     if (!commitType) {
       const answers = await inquirer.prompt(questions);
-      const selectedCommitType = answers.commitType
-        .replace(/\:(.*)/, "")
-        .replace(/"/, "");
+      const selectedCommitType = answers.commitType;
       await makeCommit(selectedCommitType, commitMessage);
     } else {
-      const message = commitMessage.slice(commitType.length + 1);
-      await makeCommit(commitType, message);
+      const message = commitMessage.slice(
+        commitType.emoji.length + commitType.name.length + 2
+      );
+      await makeCommit(`${commitType.emoji}  ${commitType.name}`, message);
     }
   }
 })();

@@ -77,7 +77,7 @@ const questions = [
   {
     type: "list",
     name: "commitType",
-    message: "Select a commit message type:",
+    message: "Select a commit type:",
     choices: Object.values(commitTypes).map(
       (type) => `${type.emoji} ${type.name}: ${type.description}`
     ),
@@ -150,8 +150,7 @@ async function makeCommit(commitType, commitMessage) {
 
 (async function main() {
   program
-    .version(await getPackageVersion())
-    .option("-l --learn", "learn more about commit types")
+    .option("--learn", "learn more about commit types")
     .option("-f, --feat", "add new feature")
     .option("-s, --style", "edit/add styles")
     .option("-x, --fix", "squash bugs")
@@ -161,9 +160,8 @@ async function makeCommit(commitType, commitMessage) {
     .option("-t, --test", "add/edit test")
     .option("-y, --try", "add untested to production")
     .option("-b, --build", "build for production")
+    .version(await getPackageVersion())
     .parse(process.argv);
-
-  console.log({ learn: program.learn, test: program.test });
 
   if (program.learn) {
     console.log(

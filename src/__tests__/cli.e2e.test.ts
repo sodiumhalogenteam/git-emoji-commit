@@ -10,10 +10,13 @@ describe("CLI E2E tests", () => {
     expect(stdout).toMatch(/Usage:/);
   });
 
-  //   test("cli.js should display the version number when run with --version argument", async () => {
-  //     const { stdout } = await execa.node(cliPath, ["--version"]);
-  //     expect(stdout).toMatch(/^\d+\.\d+\.\d+$/);
-  //   });
+  test("cli.js should display the version number when run with --version or -V argument", async () => {
+    const { stdout } = await $`node ${cliPath} --version`;
+    expect(stdout).toMatch(/^\d+\.\d+\.\d+(-[a-zA-Z0-9.]+)?$/);
+
+    const { stdout: stdout2 } = await $`node ${cliPath} -V`;
+    expect(stdout2).toMatch(/^\d+\.\d+\.\d+(-[a-zA-Z0-9.]+)?$/);
+  });
 
   // Add more test cases...
 });

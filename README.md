@@ -18,6 +18,13 @@ Simple CLI to encourage more concise commits.
 - \$`gec "YOUR COMMIT MESSAGE"` or
 - \$`gec --[option] "YOUR COMMIT MESSAGE"`
 
+## why?
+
+To encourage more concise commits. The earlier you commit the better. Each commit type helps you keep your changes organized and brief.
+
+Commit early, commit often.
+PR early, PR often.
+
 ## git-emoji-commit workflow
 
 - \$`git add .`
@@ -38,5 +45,6 @@ Simple CLI to encourage more concise commits.
 - `--build` or `-b` to make a build commit
 
 ## details
+
 - `--help` or `-h` to see options
 - `--version` or `-V` to see version

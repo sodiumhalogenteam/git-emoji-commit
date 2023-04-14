@@ -136,14 +136,14 @@ async function checkVersion() {
   }
 }
 
-async function hasStagedFiles() {
+async function getStagedFiles() {
   try {
-    await exec("git diff --cached --quiet");
-    return false;
+    const { stdout } = await exec("git diff --cached --name-only");
+    return stdout.trim().split("\n");
   } catch (err) {
     // @ts-ignore
-    if (err?.code === 1) {
-      return true;
+    if (err.code === 1) {
+      return [];
     }
     throw err;
   }
@@ -173,6 +173,19 @@ async function makeCommit(commitType: string, commitMessage: string) {
   }
 }
 
+async function confirmCommitWithNodeModules() {
+  const { proceed } = await inquirer.prompt([
+    {
+      type: "confirm",
+      name: "proceed",
+      message:
+        "🤔 'node_modules/' is staged for commit. Are you sure you want to continue?",
+      default: false,
+    },
+  ]);
+  return proceed;
+}
+
 (async function main() {
   program
     .description("Simple CLI to encourage more concise commits.")
@@ -197,12 +210,20 @@ async function makeCommit(commitType: string, commitMessage: string) {
     );
     return;
   }
-
-  if (!(await hasStagedFiles())) {
+  const stagedFiles = await getStagedFiles();
+  if (stagedFiles.length === 0) {
     console.log(
       "🤷 There are no files staged to commit. Stage some files then try again."
     );
     return;
+  }
+
+  if (stagedFiles.some((file) => file.includes("node_modules"))) {
+    const shouldProceed = await confirmCommitWithNodeModules();
+    if (!shouldProceed) {
+      console.log("❌ Commit canceled.");
+      return;
+    }
   }
 
   const commitMessage = program.args[0];

@@ -126,7 +126,11 @@ async function checkVersion() {
     const { stdout } = await exec("npm show git-emoji-commit version");
     const latestVersion = stdout.trim().toString();
     const currentVersion = await getPackageVersion();
-    if (currentVersion != latestVersion.slice(0, -1))
+    // show message if user doesn't have the latest major and minor version
+    if (
+      latestVersion.split(".")[0] !== currentVersion.split(".")[0] ||
+      latestVersion.split(".")[1] !== currentVersion.split(".")[1]
+    )
       console.log(
         "\x1b[32m", // green
         `😎  Update available: ${latestVersion}`,

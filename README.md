@@ -22,7 +22,6 @@ Simple CLI to encourage more concise commits.
 
 - \$`git add .`
 - \$`gec "YOUR COMMIT MESSAGE"` to make a commit
-- \$`git pull`
 - \$`git push`
 
 ## commit types

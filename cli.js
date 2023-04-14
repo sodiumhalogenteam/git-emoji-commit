@@ -163,8 +163,6 @@ async function makeCommit(commitType, commitMessage) {
     .option("-b, --build", "build for production")
     .parse(process.argv);
 
-  console.log({ learn: program.learn, test: program.test });
-
   if (program.learn) {
     console.log(
       "📚 Learn more about commit types here: https://www.conventionalcommits.org/en/v1.0.0/#summary"

@@ -2,7 +2,7 @@
 const program = require("commander");
 const { exec: Exec } = require("child_process");
 const inquirer = require("inquirer");
-var pjson = require("./package.json");
+const { readFile } = require("fs/promises");
 
 const commitTypes = {
   feat: {
@@ -87,19 +87,12 @@ const questions = [
   },
 ];
 
-program
-  .version(pjson.version)
-  .option("-f, --feat", "add new feature")
-  .option("-s, --style", "edit/add styles")
-  .option("-x, --fix", "squash bugs")
-  .option("-c, --chore", "add untested to production")
-  .option("-d, --doc", "add/edit documentation & content")
-  .option("-r, --refactor", "refactor or rework")
-  .option("-t, --test", "add/edit test")
-  .option("-y, --try", "add untested to production")
-  .option("-b, --build", "build for production")
-  .option("--learn", "learn more about commit types")
-  .parse(process.argv);
+async function getPackageVersion() {
+  const packageJsonRaw = await readFile("./package.json", "utf-8");
+  const packageJson = JSON.parse(packageJsonRaw);
+  const version = packageJson.version;
+  return version;
+}
 
 const exec = (command) => {
   return new Promise((resolve, reject) => {
@@ -162,6 +155,20 @@ async function makeCommit(commitType, commitMessage) {
 }
 
 (async function main() {
+  program
+    .version(await getPackageVersion())
+    .option("-f, --feat", "add new feature")
+    .option("-s, --style", "edit/add styles")
+    .option("-x, --fix", "squash bugs")
+    .option("-c, --chore", "add untested to production")
+    .option("-d, --doc", "add/edit documentation & content")
+    .option("-r, --refactor", "refactor or rework")
+    .option("-t, --test", "add/edit test")
+    .option("-y, --try", "add untested to production")
+    .option("-b, --build", "build for production")
+    .option("--learn", "learn more about commit types")
+    .parse(process.argv);
+
   if (program.learn) {
     console.log(
       "📚 Learn more about commit types here: https://www.conventionalcommits.org/en/v1.0.0/#summary"

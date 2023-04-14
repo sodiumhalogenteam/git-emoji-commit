@@ -2,22 +2,21 @@
   "name": "git-emoji-commit",
   "version": "1.19.4",
   "description": "Simple CLI to encourage more concise commits using emojis.",
-  "main": "cli.js",
+  "main": "dist/cli.js",
   "type": "module",
   "bin": {
-    "git-emoji-commit": "cli.js",
-    "gec": "cli.js"
+    "git-emoji-commit": "dist/cli.js",
+    "gec": "dist/cli.js"
   },
   "files": [
     "package.json",
-    "cli.js"
+    "dist"
   ],
   "scripts": {
     "patch-release": "npm run build && npm version patch && npm publish && git push --follow-tags",
     "minor-release": "npm run build && npm version minor && npm publish && git push --follow-tags",
     "major-release": "npm run build && npm version major && npm publish && git push --follow-tags",
-    "build": "tsc",
-    "start": "tsc && node dist/cli.js"
+    "build": "tsc"
   },
   "repository": {
     "type": "git",

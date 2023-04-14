@@ -4,6 +4,8 @@ import { exec as Exec } from "child_process";
 import inquirer from "inquirer";
 import { readFile } from "fs/promises";
 
+const STAGED_FILES_WARNING_THRESHOLD = 30;
+
 const program = new Command();
 
 interface CommitType {
@@ -124,7 +126,11 @@ async function checkVersion() {
     const { stdout } = await exec("npm show git-emoji-commit version");
     const latestVersion = stdout.trim().toString();
     const currentVersion = await getPackageVersion();
-    if (currentVersion != latestVersion.slice(0, -1))
+    // show message if user doesn't have the latest major and minor version
+    if (
+      latestVersion.split(".")[0] !== currentVersion.split(".")[0] ||
+      latestVersion.split(".")[1] !== currentVersion.split(".")[1]
+    )
       console.log(
         "\x1b[32m", // green
         `😎  Update available: ${latestVersion}`,
@@ -136,14 +142,14 @@ async function checkVersion() {
   }
 }
 
-async function hasStagedFiles() {
+async function getStagedFiles() {
   try {
-    await exec("git diff --cached --quiet");
-    return false;
+    const { stdout } = await exec("git diff --cached --name-only");
+    return stdout.trim().split("\n");
   } catch (err) {
     // @ts-ignore
-    if (err?.code === 1) {
-      return true;
+    if (err.code === 1) {
+      return [];
     }
     throw err;
   }
@@ -173,6 +179,31 @@ async function makeCommit(commitType: string, commitMessage: string) {
   }
 }
 
+async function confirmCommitWithNodeModules() {
+  const { proceed } = await inquirer.prompt([
+    {
+      type: "confirm",
+      name: "proceed",
+      message:
+        "🤔 'node_modules/' is staged for commit. Are you sure you want to continue?",
+      default: false,
+    },
+  ]);
+  return proceed;
+}
+
+async function confirmCommitHasManyFiles(stagedFilesCount: number) {
+  const { proceed } = await inquirer.prompt([
+    {
+      type: "confirm",
+      name: "proceed",
+      message: `🤔 You are committing ${stagedFilesCount} (many) files. Are you sure you want to continue?`,
+      default: false,
+    },
+  ]);
+  return proceed;
+}
+
 (async function main() {
   program
     .description("Simple CLI to encourage more concise commits.")
@@ -198,11 +229,28 @@ async function makeCommit(commitType: string, commitMessage: string) {
     return;
   }
 
-  if (!(await hasStagedFiles())) {
+  const stagedFiles = await getStagedFiles();
+  if (stagedFiles.length === 0) {
     console.log(
       "🤷 There are no files staged to commit. Stage some files then try again."
     );
     return;
+  }
+
+  if (stagedFiles.some((file) => file.includes("node_modules"))) {
+    const shouldProceed = await confirmCommitWithNodeModules();
+    if (!shouldProceed) {
+      console.log("❌ Commit canceled.");
+      return;
+    }
+  }
+
+  if (stagedFiles.length > STAGED_FILES_WARNING_THRESHOLD) {
+    const shouldProceed = await confirmCommitHasManyFiles(stagedFiles.length);
+    if (!shouldProceed) {
+      console.log("❌ Commit canceled.");
+      return;
+    }
   }
 
   const commitMessage = program.args[0];
@@ -224,10 +272,6 @@ async function makeCommit(commitType: string, commitMessage: string) {
       await makeCommit(selectedCommitType, commitMessage);
     } else {
       console.log("👍 Commit message looks good.");
-      // const message = commitMessage.slice(
-      //   commitType.emoji.length + commitType.name.length + 2
-      // );
-      // await makeCommit(`${commitType.emoji}  ${commitType.name}`, message);
     }
   }
 })();

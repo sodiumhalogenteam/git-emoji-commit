@@ -210,6 +210,7 @@ async function confirmCommitWithNodeModules() {
     );
     return;
   }
+
   const stagedFiles = await getStagedFiles();
   if (stagedFiles.length === 0) {
     console.log(
@@ -245,10 +246,6 @@ async function confirmCommitWithNodeModules() {
       await makeCommit(selectedCommitType, commitMessage);
     } else {
       console.log("👍 Commit message looks good.");
-      // const message = commitMessage.slice(
-      //   commitType.emoji.length + commitType.name.length + 2
-      // );
-      // await makeCommit(`${commitType.emoji}  ${commitType.name}`, message);
     }
   }
 })();

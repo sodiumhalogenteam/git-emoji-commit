@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 const program = require("commander");
 const { exec: Exec } = require("child_process");
 const inquirer = require("inquirer");
@@ -99,6 +98,7 @@ program
   .option("-t, --test", "add/edit test")
   .option("-y, --try", "add untested to production")
   .option("-b, --build", "build for production")
+  .option("--learn", "learn more about commit types")
   .parse(process.argv);
 
 const exec = (command) => {
@@ -162,6 +162,13 @@ async function makeCommit(commitType, commitMessage) {
 }
 
 (async function main() {
+  if (program.learn) {
+    console.log(
+      "📚 Learn more about commit types here: https://www.conventionalcommits.org/en/v1.0.0/#summary"
+    );
+    return;
+  }
+
   if (!(await hasStagedFiles())) {
     console.log(
       "There are no files staged to commit. Please stage some files before committing."

@@ -4,6 +4,8 @@ import { exec as Exec } from "child_process";
 import inquirer from "inquirer";
 import { readFile } from "fs/promises";
 
+const STAGED_FILES_WARNING_THRESHOLD = 30;
+
 const program = new Command();
 
 interface CommitType {
@@ -186,6 +188,18 @@ async function confirmCommitWithNodeModules() {
   return proceed;
 }
 
+async function confirmCommitHasManyFiles(stagedFilesCount: number) {
+  const { proceed } = await inquirer.prompt([
+    {
+      type: "confirm",
+      name: "proceed",
+      message: `🤔 You are committing ${stagedFilesCount} (many) files. Are you sure you want to continue?`,
+      default: false,
+    },
+  ]);
+  return proceed;
+}
+
 (async function main() {
   program
     .description("Simple CLI to encourage more concise commits.")
@@ -221,6 +235,14 @@ async function confirmCommitWithNodeModules() {
 
   if (stagedFiles.some((file) => file.includes("node_modules"))) {
     const shouldProceed = await confirmCommitWithNodeModules();
+    if (!shouldProceed) {
+      console.log("❌ Commit canceled.");
+      return;
+    }
+  }
+
+  if (stagedFiles.length > STAGED_FILES_WARNING_THRESHOLD) {
+    const shouldProceed = await confirmCommitHasManyFiles(stagedFiles.length);
     if (!shouldProceed) {
       console.log("❌ Commit canceled.");
       return;

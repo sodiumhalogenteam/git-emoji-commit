@@ -1,20 +1,22 @@
 {
   "name": "git-emoji-commit",
-  "version": "1.19.3",
+  "version": "1.19.5",
   "description": "Simple CLI to encourage more concise commits using emojis.",
-  "main": "cli.js",
+  "main": "dist/cli.js",
+  "type": "module",
   "bin": {
-    "git-emoji-commit": "cli.js",
-    "gec": "cli.js"
+    "git-emoji-commit": "dist/cli.js",
+    "gec": "dist/cli.js"
   },
   "files": [
     "package.json",
-    "cli.js"
+    "dist"
   ],
   "scripts": {
-    "patch-release": "npm version patch && npm publish && git push --follow-tags",
-    "minor-release": "npm version minor && npm publish && git push --follow-tags",
-    "major-release": "npm version major && npm publish && git push --follow-tags"
+    "patch-release": "npm run build && npm version patch && npm publish && git push --follow-tags",
+    "minor-release": "npm run build && npm version minor && npm publish && git push --follow-tags",
+    "major-release": "npm run build && npm version major && npm publish && git push --follow-tags",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -30,8 +32,8 @@
   },
   "homepage": "https://github.com/sodiumhalogenteam/git-emoji#readme",
   "dependencies": {
-    "commander": "^2.15.1",
-    "inquirer": "^5.2.0"
+    "commander": "^10.0.0",
+    "inquirer": "^9.1.5"
   },
   "keywords": [
     "git",
@@ -40,7 +42,10 @@
     "commit messages"
   ],
   "devDependencies": {
+    "@types/inquirer": "^9.0.3",
+    "@types/node": "^18.15.11",
     "eslint": "^7.7.0",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "typescript": "^5.0.4"
   }
 }

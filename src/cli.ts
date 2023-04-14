@@ -1,10 +1,18 @@
 #!/usr/bin/env node
-const program = require("commander");
-const { exec: Exec } = require("child_process");
-const inquirer = require("inquirer");
-const { readFile } = require("fs/promises");
+import { Command } from "commander";
+import { exec as Exec } from "child_process";
+import inquirer from "inquirer";
+import { readFile } from "fs/promises";
 
-const commitTypes = {
+const program = new Command();
+
+interface CommitType {
+  emoji: string;
+  name: string;
+  description: string;
+}
+
+const commitTypes: Record<string, CommitType> = {
   feat: {
     emoji: "📦",
     name: "FEAT",
@@ -62,14 +70,14 @@ const questions = [
     type: "input",
     name: "commitMessage",
     message: "What's your commit title/message?",
-    validate: function (value) {
+    validate: function (value: string) {
       if (value !== "") {
         return true;
       }
       console.log("😕  Please enter a valid commit message.");
       return 0;
     },
-    when: function (answers) {
+    when: function () {
       // there is no commit message
       return !program.args[0] || !program.args.length;
     },
@@ -77,13 +85,13 @@ const questions = [
   {
     type: "list",
     name: "commitType",
-    message: "Select a commit message type:",
+    message: "Select a commit type:",
     choices: Object.values(commitTypes).map(
       (type) => `${type.emoji} ${type.name}: ${type.description}`
     ),
-    when: function (answers) {
-      return answers.comments !== "Nope, all good!";
-    },
+    // when: function (answers) {
+    //   return answers.comments !== "Nope, all good!";
+    // },
   },
 ];
 
@@ -94,7 +102,12 @@ async function getPackageVersion() {
   return version;
 }
 
-const exec = (command) => {
+interface ExecResult {
+  stdout: string;
+  stderr: string;
+}
+
+const exec = (command: string): Promise<ExecResult> => {
   return new Promise((resolve, reject) => {
     Exec(command, (error, stdout, stderr) => {
       if (error) {
@@ -109,7 +122,7 @@ const exec = (command) => {
 async function checkVersion() {
   try {
     const { stdout } = await exec("npm show git-emoji-commit version");
-    const latestVersion = stdout.trim().toString("utf8");
+    const latestVersion = stdout.trim().toString();
     const currentVersion = await getPackageVersion();
     if (currentVersion != latestVersion.slice(0, -1))
       console.log(
@@ -128,29 +141,42 @@ async function hasStagedFiles() {
     await exec("git diff --cached --quiet");
     return false;
   } catch (err) {
-    if (err.code === 1) {
+    // @ts-ignore
+    if (err?.code === 1) {
       return true;
     }
     throw err;
   }
 }
 
-async function makeCommit(commitType, commitMessage) {
+async function makeCommit(commitType: string, commitMessage: string) {
   try {
     const { stdout, stderr } = await exec(
       `git commit -m "${commitType}: ${commitMessage}"`
     );
-    if (stdout.length > 0) console.log(`[] ${stdout.toString("utf8")}`);
-    if (stderr.length > 0) console.log(`{} ${stderr.toString("utf8")}`);
+    if (stdout.length > 0) console.log(`* ${stdout.toString()}`);
+    if (stderr.length > 0) console.log(`# ${stderr.toString()}`);
     checkVersion();
   } catch (err) {
-    console.error(err);
+    if (err) {
+      // @ts-expect-error
+      if (err.code === 128) {
+        console.error(
+          "Error: Committing is not possible because you have unmerged files."
+        );
+        console.error("Please resolve the conflicts and try again.");
+      } else {
+        console.error("An unknown error occurred:", err);
+      }
+      return;
+    }
   }
 }
 
 (async function main() {
   program
-    .version(await getPackageVersion())
+    .description("Simple CLI to encourage more concise commits.")
+    .option("--learn", "learn more about commit types")
     .option("-f, --feat", "add new feature")
     .option("-s, --style", "edit/add styles")
     .option("-x, --fix", "squash bugs")
@@ -160,10 +186,12 @@ async function makeCommit(commitType, commitMessage) {
     .option("-t, --test", "add/edit test")
     .option("-y, --try", "add untested to production")
     .option("-b, --build", "build for production")
-    .option("--learn", "learn more about commit types")
+    .version(await getPackageVersion())
     .parse(process.argv);
 
-  if (program.learn) {
+  const options = program.opts();
+
+  if (options.learn) {
     console.log(
       "📚 Learn more about commit types here: https://www.conventionalcommits.org/en/v1.0.0/#summary"
     );
@@ -195,10 +223,11 @@ async function makeCommit(commitType, commitMessage) {
       const selectedCommitType = answers.commitType;
       await makeCommit(selectedCommitType, commitMessage);
     } else {
-      const message = commitMessage.slice(
-        commitType.emoji.length + commitType.name.length + 2
-      );
-      await makeCommit(`${commitType.emoji}  ${commitType.name}`, message);
+      console.log("👍 Commit message looks good.");
+      // const message = commitMessage.slice(
+      //   commitType.emoji.length + commitType.name.length + 2
+      // );
+      // await makeCommit(`${commitType.emoji}  ${commitType.name}`, message);
     }
   }
 })();

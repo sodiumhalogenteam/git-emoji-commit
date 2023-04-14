@@ -1,8 +1,10 @@
 #!/usr/bin/env node
-import { program } from "commander";
+import { Command } from "commander";
 import { exec as Exec } from "child_process";
 import inquirer from "inquirer";
 import { readFile } from "fs/promises";
+
+const program = new Command();
 
 interface CommitType {
   emoji: string;
@@ -175,8 +177,6 @@ async function makeCommit(commitType: string, commitMessage: string) {
     .option("-b, --build", "build for production")
     .version(await getPackageVersion())
     .parse(process.argv);
-
-  program.parse();
 
   const options = program.opts();
 

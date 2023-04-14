@@ -159,6 +159,7 @@ async function makeCommit(commitType: string, commitMessage: string) {
     checkVersion();
   } catch (err) {
     if (err) {
+      // @ts-ignore
       if (err.code === 128) {
         console.error(
           "Error: Committing is not possible because you have unmerged files."

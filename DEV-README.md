@@ -3,7 +3,8 @@
 ## local setup
 
 - `npm install`
-- `node cli.js` to run the script (ex: `node cli.js "YOUR COMMIT MESSAGE"`)
+- `npm run build` to build the script into `./dist/cli.js`
+- `node dist/cli.js` to run the script (ex: `node /dist/cli.js "YOUR COMMIT MESSAGE"`)
 
 ## local package testing before publish
 
@@ -21,4 +22,4 @@ npm uninstall -g git-emoji-commit && npm pack && tar -tf "$(npm pack | tail -n 1
 
 ## When you're done testing
 
-Unintall local package \$`npm uninstall -g git-emoji-commit` again and reinstall global version \$`npm install -g git-emoji-commit` to get the latest version from NPM.
+Unintall local package `npm uninstall -g git-emoji-commit` again and reinstall global version `npm install -g git-emoji-commit` to get the latest version from NPM.

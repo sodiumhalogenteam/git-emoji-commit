@@ -20,7 +20,7 @@ Simple CLI to encourage more concise commits.
 
 ## why?
 
-To encourage more concise commits. The earlier you commit the better. Each commit type helps you keep your changes organized and brief.
+To encourage more concise commits. Each commit type helps you keep your changes organized and brief.
 
 Commit early, commit often.
 PR early, PR often.

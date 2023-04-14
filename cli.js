@@ -1,14 +1,8 @@
 #!/usr/bin/env node
-
-// const program = require("commander");
-// const { exec: Exec } = require("child_process");
-// const inquirer = require("inquirer");
-// var pjson = require("./package.json");
-
-import {program} from "commander";
+import { program } from "commander";
 import { exec as Exec } from "child_process";
 import inquirer from "inquirer";
-import pjson from "./package.json" assert { type: "json" };
+import { readFile } from "fs/promises";
 
 const commitTypes = {
   feat: {
@@ -93,22 +87,12 @@ const questions = [
   },
 ];
 
-if (process.argv.includes('--version') || process.argv.includes('-V')) {
-  console.log(`Version: ${pjson.version}`);
-  process.exit(0);
+async function getPackageVersion() {
+  const packageJsonRaw = await readFile("./package.json", "utf-8");
+  const packageJson = JSON.parse(packageJsonRaw);
+  const version = packageJson.version;
+  return version;
 }
-
-program
-  .option("-f, --feat", "add new feature")
-  .option("-s, --style", "edit/add styles")
-  .option("-x, --fix", "squash bugs")
-  .option("-c, --chore", "add untested to production")
-  .option("-d, --doc", "add/edit documentation & content")
-  .option("-r, --refactor", "refactor or rework")
-  .option("-t, --test", "add/edit test")
-  .option("-y, --try", "add untested to production")
-  .option("-b, --build", "build for production")
-  .parse(process.argv);
 
 const exec = (command) => {
   return new Promise((resolve, reject) => {
@@ -126,7 +110,7 @@ async function checkVersion() {
   try {
     const { stdout } = await exec("npm show git-emoji-commit version");
     const latestVersion = stdout.trim().toString("utf8");
-    const currentVersion = pjson.version.trim().slice(0, -1);
+    const currentVersion = await getPackageVersion();
     if (currentVersion != latestVersion.slice(0, -1))
       console.log(
         "\x1b[32m", // green
@@ -160,20 +144,37 @@ async function makeCommit(commitType, commitMessage) {
     if (stderr.length > 0) console.log(`{} ${stderr.toString("utf8")}`);
     checkVersion();
   } catch (err) {
-    if (err.message.includes("nothing to commit, working tree clean")) {
-      console.log(
-        "There are no files staged to commit. Please stage some files before committing."
-      );
-    } else {
-      console.error(err);
-    }
+    console.error(err);
   }
 }
 
 (async function main() {
+  program
+    .version(await getPackageVersion())
+    .option("-l --learn", "learn more about commit types")
+    .option("-f, --feat", "add new feature")
+    .option("-s, --style", "edit/add styles")
+    .option("-x, --fix", "squash bugs")
+    .option("-c, --chore", "add untested to production")
+    .option("-d, --doc", "add/edit documentation & content")
+    .option("-r, --refactor", "refactor or rework")
+    .option("-t, --test", "add/edit test")
+    .option("-y, --try", "add untested to production")
+    .option("-b, --build", "build for production")
+    .parse(process.argv);
+
+  console.log({ learn: program.learn, test: program.test });
+
+  if (program.learn) {
+    console.log(
+      "📚 Learn more about commit types here: https://www.conventionalcommits.org/en/v1.0.0/#summary"
+    );
+    return;
+  }
+
   if (!(await hasStagedFiles())) {
     console.log(
-      "There are no files staged to commit. Please stage some files before committing."
+      "🤷 There are no files staged to commit. Stage some files then try again."
     );
     return;
   }

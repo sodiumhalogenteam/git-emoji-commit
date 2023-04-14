@@ -13,9 +13,11 @@
     "cli.js"
   ],
   "scripts": {
-    "patch-release": "npm version patch && npm publish && git push --follow-tags",
-    "minor-release": "npm version minor && npm publish && git push --follow-tags",
-    "major-release": "npm version major && npm publish && git push --follow-tags"
+    "patch-release": "npm run build && npm version patch && npm publish && git push --follow-tags",
+    "minor-release": "npm run build && npm version minor && npm publish && git push --follow-tags",
+    "major-release": "npm run build && npm version major && npm publish && git push --follow-tags",
+    "build": "tsc",
+    "start": "tsc && node dist/cli.js"
   },
   "repository": {
     "type": "git",
@@ -41,7 +43,10 @@
     "commit messages"
   ],
   "devDependencies": {
+    "@types/inquirer": "^9.0.3",
+    "@types/node": "^18.15.11",
     "eslint": "^7.7.0",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "typescript": "^5.0.4"
   }
 }

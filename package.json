@@ -13,11 +13,13 @@
     "dist"
   ],
   "scripts": {
+    "test": "jest --config jest.config.cjs",
+    "test:watch": "jest --config jest.config.cjs --watch",
+    "build": "tsc",
     "alpha-release": "npm run build && npm version prerelease --preid=alpha && npm publish && git push --follow-tags",
     "patch-release": "npm run build && npm version patch && npm publish && git push --follow-tags",
     "minor-release": "npm run build && npm version minor && npm publish && git push --follow-tags",
-    "major-release": "npm run build && npm version major && npm publish && git push --follow-tags",
-    "build": "tsc"
+    "major-release": "npm run build && npm version major && npm publish && git push --follow-tags"
   },
   "repository": {
     "type": "git",
@@ -43,10 +45,17 @@
     "commit messages"
   ],
   "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.21.2",
+    "@babel/preset-env": "^7.21.4",
     "@types/inquirer": "^9.0.3",
+    "@types/jest": "^29.5.0",
     "@types/node": "^18.15.11",
+    "babel-jest": "^29.5.0",
     "eslint": "^7.7.0",
+    "execa": "^7.1.1",
+    "jest": "^29.5.0",
     "prettier": "^2.0.5",
+    "ts-jest": "^29.1.0",
     "typescript": "^5.0.4"
   }
 }

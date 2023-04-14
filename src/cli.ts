@@ -154,11 +154,22 @@ async function makeCommit(commitType: string, commitMessage: string) {
     const { stdout, stderr } = await exec(
       `git commit -m "${commitType}: ${commitMessage}"`
     );
-    if (stdout.length > 0) console.log(`[] ${stdout.toString()}`);
-    if (stderr.length > 0) console.log(`{} ${stderr.toString()}`);
+    if (stdout.length > 0) console.log(`* ${stdout.toString()}`);
+    if (stderr.length > 0) console.log(`# ${stderr.toString()}`);
     checkVersion();
   } catch (err) {
-    console.error(err);
+    if (err) {
+      // @ts-expect-error
+      if (err.code === 128) {
+        console.error(
+          "Error: Committing is not possible because you have unmerged files."
+        );
+        console.error("Please resolve the conflicts and try again.");
+      } else {
+        console.error("An unknown error occurred:", err);
+      }
+      return;
+    }
   }
 }
 

@@ -110,7 +110,7 @@ async function checkVersion() {
   try {
     const { stdout } = await exec("npm show git-emoji-commit version");
     const latestVersion = stdout.trim().toString("utf8");
-    const currentVersion = pjson.version.trim().slice(0, -1);
+    const currentVersion = await getPackageVersion();
     if (currentVersion != latestVersion.slice(0, -1))
       console.log(
         "\x1b[32m", // green
@@ -144,13 +144,7 @@ async function makeCommit(commitType, commitMessage) {
     if (stderr.length > 0) console.log(`{} ${stderr.toString("utf8")}`);
     checkVersion();
   } catch (err) {
-    if (err.message.includes("nothing to commit, working tree clean")) {
-      console.log(
-        "There are no files staged to commit. Please stage some files before committing."
-      );
-    } else {
-      console.error(err);
-    }
+    console.error(err);
   }
 }
 
@@ -178,7 +172,7 @@ async function makeCommit(commitType, commitMessage) {
 
   if (!(await hasStagedFiles())) {
     console.log(
-      "There are no files staged to commit. Please stage some files before committing."
+      "🤷 There are no files staged to commit. Stage some files then try again."
     );
     return;
   }

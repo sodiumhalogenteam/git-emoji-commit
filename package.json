@@ -15,7 +15,8 @@
   "scripts": {
     "test": "jest --config jest.config.cjs",
     "test:watch": "jest --config jest.config.cjs --watch",
-    "build": "tsc",
+    "prebuild": "node -e \"const fs = require('fs'); const pkg = require('./package.json'); fs.writeFileSync('./src/version.ts', 'export const version = \\\"' + pkg.version + '\\\";');\"",
+    "build": "npm run prebuild && tsc",
     "alpha-release": "npm run build && npm version prerelease --preid=alpha && npm publish && git push --follow-tags",
     "patch-release": "npm run build && npm version patch && npm publish && git push --follow-tags",
     "minor-release": "npm run build && npm version minor && npm publish && git push --follow-tags",

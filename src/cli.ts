@@ -2,7 +2,7 @@
 import { Command } from "commander";
 import { exec as Exec } from "child_process";
 import inquirer from "inquirer";
-import { readFile } from "fs/promises";
+import { version } from "./version.js";
 
 const STAGED_FILES_WARNING_THRESHOLD = 30;
 
@@ -97,13 +97,6 @@ const questions = [
   },
 ];
 
-async function getPackageVersion() {
-  const packageJsonRaw = await readFile("./package.json", "utf-8");
-  const packageJson = JSON.parse(packageJsonRaw);
-  const version = packageJson.version;
-  return version;
-}
-
 interface ExecResult {
   stdout: string;
   stderr: string;
@@ -125,7 +118,7 @@ async function checkVersion() {
   try {
     const { stdout } = await exec("npm show git-emoji-commit version");
     const latestVersion = stdout.trim().toString();
-    const currentVersion = await getPackageVersion();
+    const currentVersion = version;
     // show message if user doesn't have the latest major and minor version
     if (
       latestVersion.split(".")[0] !== currentVersion.split(".")[0] ||
@@ -217,7 +210,7 @@ async function confirmCommitHasManyFiles(stagedFilesCount: number) {
     .option("-t, --test", "add/edit test")
     .option("-y, --try", "add untested to production")
     .option("-b, --build", "build for production")
-    .version(await getPackageVersion())
+    .version(version)
     .parse(process.argv);
 
   const options = program.opts();

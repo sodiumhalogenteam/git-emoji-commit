@@ -17,10 +17,10 @@
     "test:watch": "jest --config jest.config.cjs --watch",
     "prebuild": "node -e \"const fs = require('fs'); const pkg = require('./package.json'); fs.writeFileSync('./src/version.ts', 'export const version = \\\"' + pkg.version + '\\\";');\"",
     "build": "npm run prebuild && tsc",
-    "alpha-release": "npm run build && npm version prerelease --preid=alpha && npm publish && git push --follow-tags",
-    "patch-release": "npm run build && npm version patch && npm publish && git push --follow-tags",
-    "minor-release": "npm run build && npm version minor && npm publish && git push --follow-tags",
-    "major-release": "npm run build && npm version major && npm publish && git push --follow-tags"
+    "alpha-release": "npm version prerelease --preid=alpha && npm run build && npm publish && git push --follow-tags",
+    "patch-release": "npm version patch && npm run build && npm publish && git push --follow-tags",
+    "minor-release": "npm version minor && npm run build && npm publish && git push --follow-tags",
+    "major-release": "npm version major && npm run build && npm publish && git push --follow-tags"
   },
   "repository": {
     "type": "git",

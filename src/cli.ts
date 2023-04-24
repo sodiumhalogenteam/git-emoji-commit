@@ -28,7 +28,7 @@ const commitTypes: Record<string, CommitType> = {
   fix: {
     emoji: "🐛",
     name: "FIX",
-    description: "fix/squash bug",
+    description: "fix bug",
   },
   chore: {
     emoji: "🧹",
@@ -149,9 +149,11 @@ async function getStagedFiles() {
 }
 
 async function makeCommit(commitType: string, commitMessage: string) {
+  const commitTypeFormated = commitType.replace(/\:(.*)/, "").replace(/"/, "");
+
   try {
     const { stdout, stderr } = await exec(
-      `git commit -m "${commitType}: ${commitMessage}"`
+      `git commit -m "${commitTypeFormated}: ${commitMessage}"`
     );
     if (stdout.length > 0) console.log(`* ${stdout.toString()}`);
     if (stderr.length > 0) console.log(`# ${stderr.toString()}`);
@@ -250,9 +252,7 @@ async function confirmCommitHasManyFiles(stagedFilesCount: number) {
 
   if (!commitMessage) {
     const answers = await inquirer.prompt(questions);
-    const commitType = answers.commitType
-      .replace(/\:(.*)/, "")
-      .replace(/"/, "");
+    const commitType = answers.commitType;
     await makeCommit(commitType, answers.commitMessage);
   } else {
     const commitType = Object.values(commitTypes).find((type) =>

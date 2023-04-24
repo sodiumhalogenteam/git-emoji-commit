@@ -140,10 +140,25 @@ async function checkVersion() {
   }
 }
 
+async function getDeltaFiles() {
+  try {
+    const { stdout } = await exec("git status -s");
+    const arrayOfDeltaFiles = stdout.trim().split("\n");
+    return arrayOfDeltaFiles;
+  } catch (err) {
+    // @ts-ignore
+    if (err.code === 1) {
+      return [];
+    }
+    throw err;
+  }
+}
+
 async function getStagedFiles() {
   try {
     const { stdout } = await exec("git diff --cached --name-only");
-    return stdout.trim().split("\n");
+    const arrayOfStagedFiles = stdout.trim().split("\n");
+    return arrayOfStagedFiles;
   } catch (err) {
     // @ts-ignore
     if (err.code === 1) {
@@ -226,6 +241,14 @@ async function confirmCommitHasManyFiles(stagedFilesCount: number) {
   if (options.learn) {
     console.log(
       "📚 Learn more about commit types here: https://www.conventionalcommits.org/en/v1.0.0/#summary"
+    );
+    return;
+  }
+
+  const deltaFiles = await getDeltaFiles();
+  if (deltaFiles.length === 0) {
+    console.log(
+      "🪹 There are no files to stage. Make some changes then try again."
     );
     return;
   }

@@ -65,6 +65,11 @@ const commitTypes: Record<string, CommitType> = {
     name: "BUILD",
     description: "build for production",
   },
+  naked: {
+    emoji: "",
+    name: "",
+    description: "naked commit",
+  },
 };
 
 const questions = [
@@ -212,6 +217,7 @@ async function confirmCommitHasManyFiles(stagedFilesCount: number) {
     .option("-t, --test", "add/edit test")
     .option("-y, --try", "add untested to production")
     .option("-b, --build", "build for production")
+    .option("-n, --naked", "no-emoji naked commit")
     .version(version)
     .parse(process.argv);
 

@@ -143,7 +143,10 @@ async function checkVersion() {
 async function getDeltaFiles() {
   try {
     const { stdout } = await exec("git status -s");
-    const arrayOfDeltaFiles = stdout.trim().split("\n");
+    const arrayOfDeltaFiles = stdout
+      .trim()
+      .split("\n")
+      .filter((line) => line.length);
     return arrayOfDeltaFiles;
   } catch (err) {
     // @ts-ignore
@@ -157,7 +160,10 @@ async function getDeltaFiles() {
 async function getStagedFiles() {
   try {
     const { stdout } = await exec("git diff --cached --name-only");
-    const arrayOfStagedFiles = stdout.trim().split("\n");
+    const arrayOfStagedFiles = stdout
+      .trim()
+      .split("\n")
+      .filter((line) => line.length);
     return arrayOfStagedFiles;
   } catch (err) {
     // @ts-ignore

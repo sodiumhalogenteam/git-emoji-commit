@@ -21,7 +21,7 @@ const commitTypes: Record<string, CommitType> = {
     description: "new feature",
   },
   style: {
-    emoji: "💅",
+    emoji: "🎨",
     name: "STYLE",
     description: "layout or style change",
   },
@@ -36,7 +36,7 @@ const commitTypes: Record<string, CommitType> = {
     description: "update packages, gitignore etc; (no prod code)",
   },
   doc: {
-    emoji: "📖",
+    emoji: "📚",
     name: "DOC",
     description: "documentation",
   },

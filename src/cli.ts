@@ -8,6 +8,11 @@ const STAGED_FILES_WARNING_THRESHOLD = 30;
 
 const program = new Command();
 
+interface Answers {
+  commitType: string;
+  commitMessage: string;
+}
+
 interface CommitType {
   emoji: string;
   name: string;
@@ -286,7 +291,7 @@ async function confirmCommitHasManyFiles(stagedFilesCount: number) {
   const commitMessage = program.args[0];
 
   if (!commitMessage) {
-    const answers = await inquirer.prompt(questions);
+    const answers = await inquirer.prompt<Answers>(questions);
     const commitType = answers.commitType;
     await makeCommit(commitType, answers.commitMessage);
   } else {

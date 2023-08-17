@@ -8,6 +8,11 @@ const STAGED_FILES_WARNING_THRESHOLD = 30;
 
 const program = new Command();
 
+interface Answers {
+  commitType: string;
+  commitMessage: string;
+}
+
 interface CommitType {
   emoji: string;
   name: string;
@@ -21,7 +26,7 @@ const commitTypes: Record<string, CommitType> = {
     description: "new feature",
   },
   style: {
-    emoji: "💅",
+    emoji: "🎨",
     name: "STYLE",
     description: "layout or style change",
   },
@@ -36,7 +41,7 @@ const commitTypes: Record<string, CommitType> = {
     description: "update packages, gitignore etc; (no prod code)",
   },
   doc: {
-    emoji: "📖",
+    emoji: "📚",
     name: "DOC",
     description: "documentation",
   },
@@ -64,6 +69,11 @@ const commitTypes: Record<string, CommitType> = {
     emoji: "🚀",
     name: "BUILD",
     description: "build for production",
+  },
+  naked: {
+    emoji: "",
+    name: "",
+    description: "naked commit",
   },
 };
 
@@ -135,10 +145,31 @@ async function checkVersion() {
   }
 }
 
+async function getDeltaFiles() {
+  try {
+    const { stdout } = await exec("git status -s");
+    const arrayOfDeltaFiles = stdout
+      .trim()
+      .split("\n")
+      .filter((line) => line.length);
+    return arrayOfDeltaFiles;
+  } catch (err) {
+    // @ts-ignore
+    if (err.code === 1) {
+      return [];
+    }
+    throw err;
+  }
+}
+
 async function getStagedFiles() {
   try {
     const { stdout } = await exec("git diff --cached --name-only");
-    return stdout.trim().split("\n");
+    const arrayOfStagedFiles = stdout
+      .trim()
+      .split("\n")
+      .filter((line) => line.length);
+    return arrayOfStagedFiles;
   } catch (err) {
     // @ts-ignore
     if (err.code === 1) {
@@ -212,6 +243,7 @@ async function confirmCommitHasManyFiles(stagedFilesCount: number) {
     .option("-t, --test", "add/edit test")
     .option("-y, --try", "add untested to production")
     .option("-b, --build", "build for production")
+    .option("-n, --naked", "no-emoji naked commit")
     .version(version)
     .parse(process.argv);
 
@@ -220,6 +252,14 @@ async function confirmCommitHasManyFiles(stagedFilesCount: number) {
   if (options.learn) {
     console.log(
       "📚 Learn more about commit types here: https://www.conventionalcommits.org/en/v1.0.0/#summary"
+    );
+    return;
+  }
+
+  const deltaFiles = await getDeltaFiles();
+  if (deltaFiles.length === 0) {
+    console.log(
+      "🪹 There are no files to stage. Make some changes then try again."
     );
     return;
   }
@@ -251,7 +291,7 @@ async function confirmCommitHasManyFiles(stagedFilesCount: number) {
   const commitMessage = program.args[0];
 
   if (!commitMessage) {
-    const answers = await inquirer.prompt(questions);
+    const answers = await inquirer.prompt<Answers>(questions);
     const commitType = answers.commitType;
     await makeCommit(commitType, answers.commitMessage);
   } else {

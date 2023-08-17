@@ -33,16 +33,19 @@ PR early, PR often.
 
 ## commit types
 
-- `--feat` or `-f` to make a feature commit
-- `--style` or `-s` to make a style commit
-- `--fix` or `-x` to make a fix commit
-- `--chore` or `-c` to make a chore commit
-- `--doc` or `-d` to make a docs commit
-- `--refactor` or `-r` to make a refactor commit
-- `--content` or `-n` to make a content commit
-- `--test` or `-t` to make a test commit
-- `--try` or `-y` to make a try commit
-- `--build` or `-b` to make a build commit
+| Commit Type      | Emoji | Flag                 |
+| ---------------- | ----- | -------------------- |
+| New Feature      | 📦    | `--feat` or `-f`     |
+| Style            | 🎨    | `--style` or `-s`    |
+| Bugfix           | 🐛    | `--fix` or `-x`      |
+| Chore            | 🧹    | `--chore` or `-c`    |
+| Documentation    | 📚    | `--doc` or `-d`      |
+| Refactor         | 🛠     | `--refactor` or `-r` |
+| Content          | 📝    | `--content` or `-n`  |
+| Test             | ✅    | `--test` or `-t`     |
+| Try              | 🤞    | `--try` or `-y`      |
+| Build            | 🚀    | `--build` or `-b`    |
+| Naked (no emoji) |       | `--naked` or `-n`    |
 
 ## details
 
